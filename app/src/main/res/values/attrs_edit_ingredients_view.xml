@@ -1,0 +1,7 @@
+<resources>
+    <declare-styleable name="EditIngredientsView">
+        <attr name="EIUnit" format="string" />
+        <attr name="EIAmount" format="float" />
+        <attr name="EIName" format="string" />
+    </declare-styleable>
+</resources>
