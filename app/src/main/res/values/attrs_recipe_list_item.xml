@@ -1,0 +1,8 @@
+<resources>
+    <declare-styleable name="RecipeListItem">
+        <attr name="RLIRating" format="integer" />
+        <attr name="RLITime" format="string" />
+        <attr name="RLIName" format="string" />
+        <attr name="RLIPicture" format="color|reference" />
+    </declare-styleable>
+</resources>

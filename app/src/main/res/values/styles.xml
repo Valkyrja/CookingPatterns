@@ -21,4 +21,10 @@
         <item name="android:background">#4a4a4a</item>
     </style>
 
+    <style name="smallRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/ratingstars</item>
+        <item name="android:minHeight">30dip</item>
+        <item name="android:maxHeight">30dip</item>
+    </style>
+
 </resources>
