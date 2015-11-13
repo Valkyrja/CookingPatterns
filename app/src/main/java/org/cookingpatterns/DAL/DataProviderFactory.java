@@ -6,11 +6,12 @@ package org.cookingpatterns.DAL;
 public class DataProviderFactory {
     public static DataProvider createDataProvider(String type)
     {
-        switch (type) {
+        return null;
+       /* switch (type) {
             case "SQLLite":
-                return new SqlLiteDataProvider();
+                //return new SqlLiteDataProvider();
             default:
-                return new SqlLiteDataProvider();
-        }
+                //return new SqlLiteDataProvider();
+        }*/
     }
 }

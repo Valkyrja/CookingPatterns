@@ -10,7 +10,6 @@ import java.util.List;
  */
 public interface DataProvider {
 
-
     List<Recipe> getRecipeList();
 
     void addRecipe(Recipe recipe);
