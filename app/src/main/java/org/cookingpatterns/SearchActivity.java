@@ -9,6 +9,9 @@ import android.view.View;
 
 public class SearchActivity extends AppCompatActivity {
 
+	//For ListView ???
+	//http://www.vogella.com/tutorials/AndroidListView/article.html
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -40,6 +40,7 @@ public class EditRecipe extends AppCompatActivity
         Ingredients = (LinearLayout) this.findViewById(R.id.listofingredients);
         Preparation = (TextView) this.findViewById(R.id.preparation);
 
+		//http://stackoverflow.com/questions/2169649/get-pick-an-image-from-androids-built-in-gallery-app-programmatically/2636538#2636538
         Picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
