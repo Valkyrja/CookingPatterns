@@ -294,7 +294,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/listofingredients" >
 
-            <org.cookingpatterns.EditIngredientsView
+            <org.cookingpatterns.View.EditIngredientsView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:EIUnit=""

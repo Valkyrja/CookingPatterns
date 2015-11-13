@@ -31,11 +31,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <org.cookingpatterns.RecipeListItem
+            <org.cookingpatterns.View.RecipeListItem
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <org.cookingpatterns.RecipeListItem
+            <org.cookingpatterns.View.RecipeListItem
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 

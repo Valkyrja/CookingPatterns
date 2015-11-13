@@ -6,6 +6,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.LinearLayout;
+
+import org.cookingpatterns.Model.Recipe;
+import org.cookingpatterns.View.RecipeListItem;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -27,6 +31,18 @@ public class SearchActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        LinearLayout list = (LinearLayout) findViewById(R.id.resultList);
+
+        Recipe res = new Recipe();
+        res.setName("Eierspeiß");
+        res.setRating(2);
+        res.setTime("00:10");
+
+        RecipeListItem ingrView = new RecipeListItem(getApplicationContext(), res);
+        ingrView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        list.addView(ingrView);
     }
 
 }

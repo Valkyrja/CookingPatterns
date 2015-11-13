@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Model.Recipe;
+import org.cookingpatterns.View.DisplayIngredientsView;
 
 import roboguice.activity.RoboActivity;
 import roboguice.inject.ContentView;
@@ -45,7 +46,8 @@ public class DisplayRecipe extends RoboActivity
             for (Ingredient ingr : RecipeToBeDisplayed.getIngredients())
             {
                 DisplayIngredientsView ingrView = new DisplayIngredientsView(getApplicationContext(), ingr);
-                ingrView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                ingrView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
                 Ingredients.addView(ingrView);
             }
             Name.setText(RecipeToBeDisplayed.getName());

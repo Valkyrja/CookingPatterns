@@ -1,4 +1,4 @@
-package org.cookingpatterns;
+package org.cookingpatterns.View;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.cookingpatterns.Model.Ingredient;
+import org.cookingpatterns.R;
 
 import roboguice.RoboGuice;
 import roboguice.inject.InjectView;

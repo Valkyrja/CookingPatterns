@@ -1,4 +1,4 @@
-package org.cookingpatterns;
+package org.cookingpatterns.View;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import org.cookingpatterns.R;
 
 /**
  * TODO: document your custom view class.

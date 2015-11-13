@@ -13,7 +13,7 @@ public class Recipe {
     private String Name;
     private String Category;
     private Integer Portions;
-    private Integer Time;
+    private String Time;
     private ImageInfo Image;
     public Integer Rating;
 
@@ -23,15 +23,23 @@ public class Recipe {
 
     //TODO add all other things
 
-    public Recipe()
-    {
-        Id = UUID.randomUUID();
-    }
+    public Recipe() { Id = UUID.randomUUID(); }
 
     public Recipe(UUID id)
     {
         Id = id;
     }
+
+    /*public Recipe(UUID id, String name, String category, Integer portions, String time, Integer rating)
+    {
+        Id = id;
+        Name;
+        Category;
+        Portions;
+        Time;
+        Image;
+        Rating;
+    }*/
 
     public String getName() {
         return Name;
@@ -55,8 +63,8 @@ public class Recipe {
     public Integer getPortions() { return Portions; }
     public void setPortions(Integer portions) { Portions = portions; }
 
-    public Integer getTime() { return Time; }
-    public void setTime(Integer time) { Time = time; }
+    public String getTime() { return Time; }
+    public void setTime(String time) { Time = time; }
 
     public ImageInfo getImage() {
         return Image;
