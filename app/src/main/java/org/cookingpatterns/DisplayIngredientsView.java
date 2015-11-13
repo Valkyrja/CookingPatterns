@@ -7,63 +7,57 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.cookingpatterns.Model.Ingredient;
+
+import roboguice.RoboGuice;
+import roboguice.inject.InjectView;
+
 /**
  * TODO: document your custom view class.
  */
 public class DisplayIngredientsView extends LinearLayout {
-    private String Unit;
-    private float Amount;
-    private String Name;
 
-    private TextView AmountView;
-    private TextView UnitView;
-    private TextView NameView;
+    private Ingredient ingredient;
+
+    @InjectView(R.id.amount) private TextView AmountView;
+    @InjectView(R.id.unit) private TextView UnitView;
+    @InjectView(R.id.name) private TextView NameView;
 
     public DisplayIngredientsView(Context context) {
         super(context);
-        initView(context);
-        init(null, 0);
+        inflate(context, R.layout.displayingredientsview, this);
+        RoboGuice.getInjector(getContext()).injectMembers(this);
     }
 
-    public DisplayIngredientsView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initView(context);
-        init(attrs, 0);
+    public DisplayIngredientsView(Context context, Ingredient ingr) {
+        super(context);
+        inflate(context, R.layout.displayingredientsview, this);
+        RoboGuice.getInjector(getContext()).injectMembers(this);
+
+        ingredient = ingr;
     }
 
     public DisplayIngredientsView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initView(context);
-        init(attrs, defStyle);
+        inflate(context, R.layout.displayingredientsview, this);
+        RoboGuice.getInjector(getContext()).injectMembers(this);
     }
 
-    private void initView(Context context) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.displayingredientsview, this);
-    }
-
-    private void init(AttributeSet attrs, int defStyle) {
-        // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.DisplayIngredientsView, defStyle, 0);
-
-        Unit = a.getString(R.styleable.DisplayIngredientsView_DIUnit);
-        Amount = a.getFloat(R.styleable.DisplayIngredientsView_DIAmount, 0);
-        Name = a.getString(R.styleable.DisplayIngredientsView_DIName);
-
-        a.recycle();
+    public DisplayIngredientsView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        inflate(context, R.layout.displayingredientsview, this);
+        RoboGuice.getInjector(getContext()).injectMembers(this);
     }
 
     @Override
-    protected void onFinishInflate() {
+    public void onFinishInflate() {
         super.onFinishInflate();
-
-        AmountView = (TextView) this.findViewById(R.id.amount);
-        AmountView.setText(String.format("%.2f", Amount));
-        UnitView = (TextView) this.findViewById(R.id.unit);
-        UnitView.setText(Unit);
-        NameView = (TextView) this.findViewById(R.id.name);
-        NameView.setText(Name);
+        //All injections are available from here
+        //in both cases of XML and programmatic creations (see below)
+        if(ingredient != null) {
+            AmountView.setText(String.format("%.2f", ingredient.getAmount()));
+            UnitView.setText(String.format("%s", ingredient.getUnit()));
+            NameView.setText(ingredient.getName());
+        }
     }
 }

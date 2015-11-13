@@ -11,7 +11,15 @@ public class Recipe {
 
     private final UUID Id;
     private String Name;
+    private String Category;
+    private Integer Portions;
+    private Integer Time;
+    private ImageInfo Image;
+    public Integer Rating;
+
     private List<Ingredient> ingredients; //TODO replace with other datastructure
+
+    private String Description;
 
     //TODO add all other things
 
@@ -39,6 +47,36 @@ public class Recipe {
 
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public String getCategory() { return Category; }
+    public void setCategory(String category) { Category = category; }
+
+    public Integer getPortions() { return Portions; }
+    public void setPortions(Integer portions) { Portions = portions; }
+
+    public Integer getTime() { return Time; }
+    public void setTime(Integer time) { Time = time; }
+
+    public ImageInfo getImage() {
+        return Image;
+    }
+    public void setImage(ImageInfo image) {
+        Image = image;
+    }
+
+    public Integer getRating() {
+        return Rating;
+    }
+    public void setRating(Integer rating) {
+        Rating = rating;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+    public void setDescription(String description) {
+        Description = description;
     }
 
     public UUID getId() {

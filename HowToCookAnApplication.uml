@@ -58,7 +58,7 @@
 			CodeGeneration
 		</plugin>
 </profile>
-<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Mon Nov 09 22:58:18 CET 2015'>
+<XMI xmi.version = '1.2' xmlns:UML = 'org.omg.xmi.namespace.UML' timestamp = 'Fri Nov 13 14:57:50 CET 2015'>
   <XMI.header>    <XMI.documentation>
       <XMI.exporter>ArgoUML (using Netbeans XMI Writer version 1.0)</XMI.exporter>
       <XMI.exporterVersion>0.34(6) revised on $Date: 2010-01-11 22:20:14 +0100 (Mon, 11 Jan 2010) $ </XMI.exporterVersion>
@@ -960,7 +960,7 @@
       justification="Center"
     >ActivityBuilder</text>
     <group name="Fig2.2"
-         description="org.argouml.uml.diagram.ui.FigStereotypesGroup[425, 433, 91, 0]"
+         description="org.argouml.uml.diagram.ui.FigStereotypesGroup[417, 433, 91, 0]"
          href="-64--88-56-1--5df8e8e2:150dc30a573:-8000:0000000000000A7B"
          fill="0"
          fillcolor="white"
@@ -972,7 +972,7 @@
       </private>
       
       <rectangle name="Fig2.2.0"
-        x="425"
+        x="417"
         y="433"
         width="91"
         height="0"
@@ -2013,7 +2013,7 @@
                         offset="5" />
     </private>
     <path name="Fig9.0"
-      description="org.tigris.gef.presentation.FigPoly"
+      description="org.argouml.gefext.ArgoFigPoly"
       fill="0"
       fillcolor="white"
       stroke="1"

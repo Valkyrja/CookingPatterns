@@ -16,43 +16,52 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import org.cookingpatterns.Model.Ingredient;
+import org.cookingpatterns.Model.Recipe;
+
+import roboguice.RoboGuice;
+import roboguice.inject.InjectView;
+
 /**
  * TODO: document your custom view class.
  */
 public class RecipeListItem extends LinearLayout
 {
-    private String Time;
-    private String Name;
-    private int Rating;
-    private Drawable Picture;
+    //private String Time;
+    //private String Name;
+    //private int Rating;
+    //private Drawable Picture;
+    private Recipe RecipeToBeDisplayed;
 
-    private RatingBar RatingView;
-    private TextView TimeView;
-    private TextView NameView;
-    private ImageView PictureView;
+    @InjectView(R.id.rating)   private RatingBar RatingView;
+    @InjectView(R.id.duration) private TextView TimeView;
+    @InjectView(R.id.name)     private TextView NameView;
+    @InjectView(R.id.picture)  private ImageView PictureView;
 
     public RecipeListItem(Context context) {
         super(context);
-        initView(context);
-        init(null, 0);
+        inflate(context, R.layout.recipelistitem, this);
+        RoboGuice.getInjector(getContext()).injectMembers(this);
     }
 
-    public RecipeListItem(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initView(context);
-        init(attrs, 0);
+    public RecipeListItem(Context context, Recipe recipe) {
+        super(context);
+        inflate(context, R.layout.recipelistitem, this);
+        RoboGuice.getInjector(getContext()).injectMembers(this);
+
+        RecipeToBeDisplayed = recipe;
     }
 
     public RecipeListItem(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initView(context);
-        init(attrs, defStyle);
+        inflate(context, R.layout.recipelistitem, this);
+        RoboGuice.getInjector(getContext()).injectMembers(this);
     }
 
-    private void initView(Context context) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.recipelistitem, this);
+    public RecipeListItem(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        inflate(context, R.layout.recipelistitem, this);
+        RoboGuice.getInjector(getContext()).injectMembers(this);
     }
 
     private void init(AttributeSet attrs, int defStyle) {
@@ -60,10 +69,10 @@ public class RecipeListItem extends LinearLayout
         final TypedArray a = getContext().obtainStyledAttributes(
                 attrs, R.styleable.RecipeListItem, defStyle, 0);
 
-        Time = a.getString(R.styleable.RecipeListItem_RLITime);
-        Name = a.getString(R.styleable.RecipeListItem_RLIName);
-        Rating = a.getInteger(R.styleable.RecipeListItem_RLIRating, -1);
-        Picture = a.getDrawable(R.styleable.RecipeListItem_RLIPicture);
+        //Time = a.getString(R.styleable.RecipeListItem_RLITime);
+        //Name = a.getString(R.styleable.RecipeListItem_RLIName);
+        //Rating = a.getInteger(R.styleable.RecipeListItem_RLIRating, -1);
+        //Picture = a.getDrawable(R.styleable.RecipeListItem_RLIPicture);
 
         a.recycle();
     }
@@ -72,13 +81,13 @@ public class RecipeListItem extends LinearLayout
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        RatingView = (RatingBar) this.findViewById(R.id.rating);
-        RatingView.setRating((float)Rating);
-        TimeView = (TextView) this.findViewById(R.id.duration);
-        TimeView.setText(Time);
-        NameView = (TextView) this.findViewById(R.id.name);
-        NameView.setText(Name);
-        PictureView = (ImageView) this.findViewById(R.id.picture);
-        PictureView.setImageDrawable(Picture);
+        if(RecipeToBeDisplayed != null)
+        {
+            NameView.setText(RecipeToBeDisplayed.getName());
+            TimeView.setText(RecipeToBeDisplayed.getTime());
+            RatingView.setRating(RecipeToBeDisplayed.getRating());
+
+            PictureView.setImageDrawable((Drawable)RecipeToBeDisplayed.getImage().GetImage());
+        }
     }
 }

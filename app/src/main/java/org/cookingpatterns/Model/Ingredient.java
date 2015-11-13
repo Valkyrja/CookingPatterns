@@ -9,6 +9,8 @@ public class Ingredient {
 
     private final UUID Id;
     private String Name;
+    private double Amount;
+    public UnitOfMeasure Unit;
 
     public Ingredient()
     {
@@ -23,9 +25,20 @@ public class Ingredient {
     public String getName() {
         return Name;
     }
-
     public void setName(String name) {
         Name = name;
+    }
+
+    public double getAmount() { return Amount; }
+    public void setAmount(double amount) {
+        Amount = amount;
+    }
+
+    public UnitOfMeasure getUnit() {
+        return Unit;
+    }
+    public void setUnit(UnitOfMeasure unit) {
+        Unit = unit;
     }
 
     public UUID getId() {
