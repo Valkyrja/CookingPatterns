@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import org.cookingpatterns.Model.ImageInfo;
 import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Model.Recipe;
 import org.cookingpatterns.R;
@@ -41,10 +42,15 @@ public class RecipeListItem extends LinearLayout
         super(context);
         inflate(context, R.layout.recipelistitem, this);
         RoboGuice.getInjector(getContext().getApplicationContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext().getApplicationContext()).injectViewMembers(this);
     }
 
     public RecipeListItem(Context context, Recipe recipe) {
         super(context);
+        inflate(context, R.layout.recipelistitem, this);
+        RoboGuice.getInjector(getContext().getApplicationContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext().getApplicationContext()).injectViewMembers(this);
+
         RecipeToBeDisplayed = recipe;
     }
 
@@ -52,19 +58,19 @@ public class RecipeListItem extends LinearLayout
         super(context, attrs, defStyle);
         inflate(context, R.layout.recipelistitem, this);
         RoboGuice.getInjector(getContext().getApplicationContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext().getApplicationContext()).injectViewMembers(this);
     }
 
     public RecipeListItem(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.recipelistitem, this);
         RoboGuice.getInjector(getContext().getApplicationContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext().getApplicationContext()).injectViewMembers(this);
     }
 
     public static RecipeListItem CreateListItem(Context context, Recipe recipe)
     {
         RecipeListItem item = new RecipeListItem(context, recipe);
-        inflate(context, R.layout.recipelistitem, item);
-        RoboGuice.getInjector(context).injectMembers(item);
         item.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
         item.onFinishInflate();
@@ -77,13 +83,24 @@ public class RecipeListItem extends LinearLayout
 
         Log.w("RecipeListItem", "onFinishInflate --- Called!!!!!!!!!!!!!!!!!!!!!!");
 
+        UpdateDataInView();
+    }
+
+    private void UpdateDataInView()
+    {
         if(RecipeToBeDisplayed != null)
         {
             NameView.setText(RecipeToBeDisplayed.getName());
             TimeView.setText(RecipeToBeDisplayed.getTime());
             RatingView.setRating(RecipeToBeDisplayed.getRating());
 
-            PictureView.setImageDrawable((Drawable)RecipeToBeDisplayed.getImage().GetImage());
+            ImageInfo image = RecipeToBeDisplayed.getImage();
+            PictureView.setImageDrawable((Drawable)(image != null ? image.GetImage() : null));
         }
+    }
+
+    public void setRecipe(Recipe recipeToBeDisplayed) {
+        RecipeToBeDisplayed = recipeToBeDisplayed;
+        UpdateDataInView();
     }
 }

@@ -11,9 +11,11 @@ public class ImageInfo implements Serializable
     imagePath = path;
   }
 
-  public Object GetImage()
-  {
-    return null;
-  }
+  public Object GetImage() { return null; }
+
+  public String GetImagePath()
+    {
+        return imagePath;
+    }
 
 }

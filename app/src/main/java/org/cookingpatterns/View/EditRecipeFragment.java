@@ -1,6 +1,5 @@
 package org.cookingpatterns.View;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
@@ -17,16 +16,14 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
-import android.widget.TextView;
 
 import com.google.inject.Inject;
 
-import org.cookingpatterns.EventMessages.OnNewRecipeClick;
 import org.cookingpatterns.EventMessages.OnSaveRecipeClick;
 import org.cookingpatterns.Model.ImageAsDrawable;
+import org.cookingpatterns.Model.ImageInfo;
 import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Model.Recipe;
 import org.cookingpatterns.R;
@@ -137,7 +134,9 @@ public class EditRecipeFragment extends Fragment
             Portion.setText(RecipeToBeDisplayed.getPortions());
             Preparation.setText(RecipeToBeDisplayed.getDescription());
 
-            Picture.setImageDrawable((Drawable) RecipeToBeDisplayed.getImage().GetImage());
+            ImageInfo image = RecipeToBeDisplayed.getImage();
+            Picture.setImageDrawable((Drawable) (image != null ? image.GetImage() : null));
+            Picture.setTag(RecipeToBeDisplayed.getImage().GetImagePath());
             IngdientsAdapter.addAll(RecipeToBeDisplayed.getIngredients());
         }
         Ingredients.setAdapter(IngdientsAdapter);
@@ -187,29 +186,29 @@ public class EditRecipeFragment extends Fragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             if (requestCode == PICTURE_SELECTED) {
-                Uri selectedImageUri = data.getData();
-                getPath(selectedImageUri);
+                String path = getFullPath(data.getData());
+                if(path != null) {
+                    RecipeToBeDisplayed.setImage(new ImageAsDrawable(path));
+                    Picture.setImageDrawable((Drawable) RecipeToBeDisplayed.getImage().GetImage());
+                    Picture.setTag(RecipeToBeDisplayed.getImage().GetImagePath());
+                }
             }
         }
     }
 
-    public String getPath(Uri uri)
+    public String getFullPath(Uri uri)
     {
-        // just some safety built in
         if( uri == null ) {
             return null;
         }
-        // try to retrieve the image from the media store first
-        // this will only work for images selected from gallery
+
         String[] projection = { MediaStore.Images.Media.DATA };
         Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
         if( cursor != null ){
-            int column_index = cursor
-                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);
         }
-        // this is our fallback here
         return uri.getPath();
     }
 }

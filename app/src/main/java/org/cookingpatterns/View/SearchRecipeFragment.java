@@ -21,12 +21,15 @@ import com.google.inject.Inject;
 import org.cookingpatterns.EventMessages.OnDisplayRecipeClick;
 import org.cookingpatterns.EventMessages.OnEditRecipeClick;
 import org.cookingpatterns.EventMessages.OnNewRecipeClick;
+import org.cookingpatterns.EventMessages.OnProvideSearchResultEvent;
+import org.cookingpatterns.EventMessages.OnSaveRecipeClick;
 import org.cookingpatterns.EventMessages.OnSearchRequestClick;
 import org.cookingpatterns.Model.Recipe;
 import org.cookingpatterns.R;
 import java.util.ArrayList;
 import roboguice.RoboGuice;
 import roboguice.event.EventManager;
+import roboguice.event.Observes;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
@@ -40,6 +43,8 @@ public class SearchRecipeFragment extends Fragment
 
     @Inject
     private EventManager eventManager;
+
+    private RecipeListAdapter RecipeAdapter;
 
     public static SearchRecipeFragment CreateFragment()
     {
@@ -82,7 +87,8 @@ public class SearchRecipeFragment extends Fragment
             list.add(res);
         }
 
-        ResultList.setAdapter(new RecipeListAdapter(getActivity().getApplication(), list));
+        RecipeAdapter = new RecipeListAdapter(getActivity().getApplication(), list);
+        ResultList.setAdapter(RecipeAdapter);
 
         ResultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -129,5 +135,11 @@ public class SearchRecipeFragment extends Fragment
         outState.putString("Query", SearchField.getQuery().toString());
 
         Log.i("SearchRecipeFragment", "onSaveInstanceState");
+    }
+
+    private void OnProvideSearchResultEvent(@Observes OnProvideSearchResultEvent event) {
+        Log.i("SearchRecipeFragment", "OnDisplayRecipeClicked");
+        RecipeAdapter.clear();
+        RecipeAdapter.addAll(event.GetResult());
     }
 }

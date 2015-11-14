@@ -18,6 +18,7 @@ import com.google.inject.Inject;
 
 import org.cookingpatterns.EventMessages.OnRecalculatePortionsClick;
 import org.cookingpatterns.EventMessages.OnUpdateRecipeDataForViewEvent;
+import org.cookingpatterns.Model.ImageInfo;
 import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Model.Recipe;
 import org.cookingpatterns.R;
@@ -102,7 +103,9 @@ public class DisplayRecipeFragment extends Fragment
             Portion.setText(RecipeToBeDisplayed.getPortions());
             Preparation.setText(RecipeToBeDisplayed.getDescription());
 
-            Picture.setImageDrawable((Drawable)RecipeToBeDisplayed.getImage().GetImage());
+            ImageInfo image = RecipeToBeDisplayed.getImage();
+            Picture.setImageDrawable((Drawable) (image != null ? image.GetImage() : null));
+
             for (Ingredient ingr : RecipeToBeDisplayed.getIngredients())
             {
                 DisplayIngredientsView ingrView = new DisplayIngredientsView(getActivity().getApplicationContext(), ingr);
