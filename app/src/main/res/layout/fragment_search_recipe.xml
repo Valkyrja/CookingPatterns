@@ -24,22 +24,15 @@
             android:paddingBottom="6dp"
             android:id="@+id/searchView"
             android:background="@android:drawable/dialog_holo_light_frame"
-            android:backgroundTint="#caf4db" />
+            android:backgroundTint="#d8e8c6" />
 
-        <LinearLayout
+        <ListView
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/resultList">
 
-            <org.cookingpatterns.View.RecipeListItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <org.cookingpatterns.View.RecipeListItem
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
+        </ListView>
 
     </LinearLayout>
 
@@ -50,6 +43,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@android:drawable/ic_input_add"
-        app:backgroundTint="#ebebeb" />
+        app:backgroundTint="@color/colorAccent" />
 
 </FrameLayout>

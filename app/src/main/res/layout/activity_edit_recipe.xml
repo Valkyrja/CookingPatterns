@@ -112,7 +112,8 @@
             android:layout_gravity="fill"
             android:id="@+id/rating"
             style="@style/smallRatingBar"
-            android:numStars="5" />
+            android:numStars="5"
+            android:stepSize="1" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -141,21 +142,7 @@
 
     </GridLayout>
 
-    <LinearLayout
-         android:orientation="horizontal"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content">
-
-     <LinearLayout
-             android:orientation="vertical"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content">
-
-     </LinearLayout>
-
-    </LinearLayout>
-
-             <!--<LinearLayout
+    <!--<LinearLayout
                  android:orientation="horizontal"
                  android:layout_width="match_parent"
                  android:layout_height="wrap_content">

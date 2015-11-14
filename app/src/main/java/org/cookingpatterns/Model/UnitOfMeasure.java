@@ -1,6 +1,6 @@
 package org.cookingpatterns.Model;
 
-enum UnitOfMeasure
+public enum UnitOfMeasure
 {
   g,
   pcs,

@@ -12,20 +12,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".SearchActivity"
+            android:name=".Controler"
             android:label="@string/title_activity_search"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:theme="@style/AppTheme.AppBarOverlay" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ViewEditRecipe" >
-        </activity>
         <activity android:name=".DisplayRecipe" >
         </activity>
         <activity android:name=".EditRecipe" >
+        </activity>
+        <activity android:name=".SearchActivity" >
         </activity>
     </application>
 

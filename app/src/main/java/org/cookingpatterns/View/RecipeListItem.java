@@ -1,5 +1,6 @@
 package org.cookingpatterns.View;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -9,6 +10,7 @@ import android.graphics.Picture;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -28,10 +30,6 @@ import roboguice.inject.InjectView;
  */
 public class RecipeListItem extends LinearLayout
 {
-    //private String Time;
-    //private String Name;
-    //private int Rating;
-    //private Drawable Picture;
     private Recipe RecipeToBeDisplayed;
 
     @InjectView(R.id.rating)   private RatingBar RatingView;
@@ -42,45 +40,42 @@ public class RecipeListItem extends LinearLayout
     public RecipeListItem(Context context) {
         super(context);
         inflate(context, R.layout.recipelistitem, this);
-        RoboGuice.getInjector(getContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext().getApplicationContext()).injectMembers(this);
     }
 
     public RecipeListItem(Context context, Recipe recipe) {
         super(context);
-        inflate(context, R.layout.recipelistitem, this);
-        RoboGuice.getInjector(getContext()).injectMembers(this);
-
         RecipeToBeDisplayed = recipe;
     }
 
     public RecipeListItem(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         inflate(context, R.layout.recipelistitem, this);
-        RoboGuice.getInjector(getContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext().getApplicationContext()).injectMembers(this);
     }
 
     public RecipeListItem(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.recipelistitem, this);
-        RoboGuice.getInjector(getContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext().getApplicationContext()).injectMembers(this);
     }
 
-    private void init(AttributeSet attrs, int defStyle) {
-        // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.RecipeListItem, defStyle, 0);
-
-        //Time = a.getString(R.styleable.RecipeListItem_RLITime);
-        //Name = a.getString(R.styleable.RecipeListItem_RLIName);
-        //Rating = a.getInteger(R.styleable.RecipeListItem_RLIRating, -1);
-        //Picture = a.getDrawable(R.styleable.RecipeListItem_RLIPicture);
-
-        a.recycle();
+    public static RecipeListItem CreateListItem(Context context, Recipe recipe)
+    {
+        RecipeListItem item = new RecipeListItem(context, recipe);
+        inflate(context, R.layout.recipelistitem, item);
+        RoboGuice.getInjector(context).injectMembers(item);
+        item.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        item.onFinishInflate();
+        return item;
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+
+        Log.w("RecipeListItem", "onFinishInflate --- Called!!!!!!!!!!!!!!!!!!!!!!");
 
         if(RecipeToBeDisplayed != null)
         {

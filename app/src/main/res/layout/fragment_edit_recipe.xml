@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.cookingpatterns.View.DisplayRecipeFragment">
+    tools:context="org.cookingpatterns.View.EditRecipeFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 android:rowCount="5"
                 android:orientation="horizontal">
 
-                <TextView
+                <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="0"
@@ -86,7 +86,7 @@
                     android:text="@string/portions"
                     android:layout_gravity="right" />
 
-                <TextView
+                <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
@@ -98,7 +98,7 @@
                     android:id="@+id/category"
                     android:layout_gravity="fill_horizontal" />
 
-                <TextView
+                <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_column="1"
@@ -108,7 +108,8 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text=""
                     android:id="@+id/time"
-                    android:layout_gravity="fill_horizontal" />
+                    android:layout_gravity="fill_horizontal"
+                    android:inputType="time" />
 
                 <RatingBar
                     android:layout_width="wrap_content"
@@ -119,8 +120,7 @@
                     android:id="@+id/rating"
                     style="@style/smallRatingBar"
                     android:numStars="5"
-                    android:stepSize="1"
-                    android:isIndicator="true"/>
+                    android:stepSize="1" />
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -144,7 +144,8 @@
                     android:background="@android:drawable/ic_menu_gallery"
                     android:foreground="@drawable/border"
                     android:id="@+id/picture"
-                    android:layout_gravity="right|top" />
+                    android:layout_gravity="right|top"
+                    android:clickable="true" />
 
             </GridLayout>
 
@@ -168,14 +169,23 @@
                     android:textStyle="italic"
                     android:text="@string/ingredient" />
 
-                <LinearLayout
+                <ListView
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/listofingredients" >
 
-                </LinearLayout>
+                </ListView>
 
+                <ImageButton
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/addingredient"
+                    android:layout_gravity="bottom|end"
+                    android:background="@android:drawable/ic_input_add"
+                    android:scaleType="centerInside"
+                    android:layout_marginBottom="5sp"
+                    android:layout_marginRight="5sp" />
 
             </LinearLayout>
 
@@ -211,5 +221,14 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_menu_save"
+        app:backgroundTint="@color/colorAccent" />
 
 </FrameLayout>

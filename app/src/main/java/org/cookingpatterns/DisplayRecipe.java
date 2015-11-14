@@ -46,7 +46,7 @@ public class DisplayRecipe extends RoboActivity
             for (Ingredient ingr : RecipeToBeDisplayed.getIngredients())
             {
                 DisplayIngredientsView ingrView = new DisplayIngredientsView(getApplicationContext(), ingr);
-                ingrView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                ingrView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                         LinearLayout.LayoutParams.WRAP_CONTENT));
                 Ingredients.addView(ingrView);
             }

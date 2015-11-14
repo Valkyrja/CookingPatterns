@@ -44,14 +44,10 @@ public class EditRecipe extends AppCompatActivity
         Picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-
-                // in onCreate or any event where your want the user to
-                // select a file
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent,
-                        "Select Picture"), PICTURE_SELECTED);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICTURE_SELECTED);
             }
         });
     }

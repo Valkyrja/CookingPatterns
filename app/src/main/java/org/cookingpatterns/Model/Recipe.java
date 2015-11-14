@@ -1,5 +1,6 @@
 package org.cookingpatterns.Model;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 import java.util.UnknownFormatConversionException;
@@ -7,19 +8,20 @@ import java.util.UnknownFormatConversionException;
 /**
  * Created by Andreas on 10.11.2015.
  */
-public class Recipe {
-
-    private final UUID Id;
-    private String Name;
-    private String Category;
-    private Integer Portions;
-    private String Time;
-    private ImageInfo Image;
+public class Recipe implements Serializable
+{
+    // For Serializable fields need to be public (sorry)
+    public UUID Id;
+    public String Name;
+    public String Category;
+    public Integer Portions;
+    public String Time;
+    public ImageInfo Image;
     public Integer Rating;
 
-    private List<Ingredient> ingredients; //TODO replace with other datastructure
+    public List<Ingredient> ingredients; //TODO replace with other datastructure
 
-    private String Description;
+    public String Description;
 
     //TODO add all other things
 
@@ -52,9 +54,11 @@ public class Recipe {
     public List<Ingredient> getIngredients() {
         return ingredients;
     }
-
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+    public void addIngredient(Ingredient ingredient) {
+        this.ingredients.add(ingredient);
     }
 
     public String getCategory() { return Category; }

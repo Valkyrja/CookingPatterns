@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -34,15 +35,15 @@ public class SearchActivity extends AppCompatActivity {
 
         LinearLayout list = (LinearLayout) findViewById(R.id.resultList);
 
+        Log.w("SearchActivity", "onCreate --- Called!!!!!!!!!!!!!!!!!!!!!!");
+
         Recipe res = new Recipe();
         res.setName("Eierspeiß");
         res.setRating(2);
         res.setTime("00:10");
 
-        RecipeListItem ingrView = new RecipeListItem(getApplicationContext(), res);
-        ingrView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        list.addView(ingrView);
+        list.addView(RecipeListItem.CreateListItem(getApplicationContext(), res));
+        list.addView(RecipeListItem.CreateListItem(getApplicationContext(), res));
     }
 
 }

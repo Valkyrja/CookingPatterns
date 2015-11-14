@@ -1,15 +1,16 @@
 package org.cookingpatterns.Model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * Created by Andreas on 10.11.2015.
  */
-public class Ingredient {
-
-    private final UUID Id;
-    private String Name;
-    private double Amount;
+public class Ingredient implements Serializable
+{
+    public UUID Id;
+    public String Name;
+    public double Amount;
     public UnitOfMeasure Unit;
 
     public Ingredient()

@@ -19,68 +19,62 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import org.cookingpatterns.Model.ImageAsDrawable;
+import org.cookingpatterns.Model.Ingredient;
+import org.cookingpatterns.Model.Recipe;
+import org.cookingpatterns.Model.UnitOfMeasure;
 import org.cookingpatterns.R;
+
+import roboguice.RoboGuice;
+import roboguice.inject.InjectView;
 
 /**
  * TODO: document your custom view class.
  */
-public class EditIngredientsView extends LinearLayout {
-    private String Unit;
-    private float Amount;
-    private String Name;
+public class EditIngredientsView extends LinearLayout
+{
+    private Ingredient ingredient;
 
-    private EditText AmountView;
-    private TextView UnitView;
-    private AutoCompleteTextView NameView;
-    private Spinner DropdownNameView;
+    @InjectView(R.id.amount)        private EditText AmountView;
+    @InjectView(R.id.unit)          private TextView UnitView;
+    @InjectView(R.id.name)          private AutoCompleteTextView NameView;
+    @InjectView(R.id.nameSpinner)   private Spinner DropdownNameView;
 
     public EditIngredientsView(Context context) {
         super(context);
-        initView(context);
-        init(null, 0);
+        inflate(context, R.layout.editingredientsview, this);
+        RoboGuice.getInjector(getContext()).injectMembers(this);
     }
 
-    public EditIngredientsView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        initView(context);
-        init(attrs, 0);
+    public EditIngredientsView(Context context, Ingredient ingr) {
+        super(context);
+        inflate(context, R.layout.editingredientsview, this);
+        RoboGuice.getInjector(getContext()).injectMembers(this);
+
+        ingredient = ingr;
     }
 
     public EditIngredientsView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initView(context);
-        init(attrs, defStyle);
+        inflate(context, R.layout.editingredientsview, this);
+        RoboGuice.getInjector(getContext()).injectMembers(this);
     }
 
-    private void initView(Context context) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.editingredientsview, this);
-    }
-
-    private void init(AttributeSet attrs, int defStyle) {
-        // Load attributes
-        final TypedArray a = getContext().obtainStyledAttributes(
-                attrs, R.styleable.EditIngredientsView, defStyle, 0);
-
-        Unit = a.getString(R.styleable.EditIngredientsView_EIUnit);
-        Amount = a.getFloat(R.styleable.EditIngredientsView_EIAmount, 0);
-        Name = a.getString(R.styleable.EditIngredientsView_EIName);
-
-        a.recycle();
+    public EditIngredientsView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        inflate(context, R.layout.editingredientsview, this);
+        RoboGuice.getInjector(getContext()).injectMembers(this);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        AmountView = (EditText) this.findViewById(R.id.amount);
-        AmountView.setText(String.format("%.2f", Amount));
-        UnitView = (TextView) this.findViewById(R.id.unit);
-        UnitView.setText(Unit);
-        NameView = (AutoCompleteTextView) this.findViewById(R.id.edit_ip);
-        NameView.setText(Name);
-        DropdownNameView = (Spinner) this.findViewById(R.id.spinner_ip);
+        if(ingredient != null) {
+            AmountView.setText(String.format("%.2f", ingredient.getAmount()));
+            UnitView.setText(String.format("%s", ingredient.getUnit()));
+            NameView.setText(ingredient.getName());
+        }
 
         String[] list = new String[] { "some 1", "some 2", "some 3" };
         //set auto complete
@@ -93,11 +87,25 @@ public class EditIngredientsView extends LinearLayout {
                 NameView.setText(DropdownNameView.getSelectedItem().toString());
                 NameView.dismissDropDown();
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 NameView.setText(DropdownNameView.getSelectedItem().toString());
                 NameView.dismissDropDown();
             }
         });
+    }
+
+    public Ingredient ExtractDataFromView()
+    {
+        if(ingredient == null)
+        {
+            ingredient = new Ingredient();
+        }
+        ingredient.setName(NameView.getText().toString());
+        ingredient.setAmount(Double.parseDouble(AmountView.getText().toString()));
+        ingredient.setUnit(UnitOfMeasure.valueOf(UnitView.getText().toString()));
+
+        return ingredient;
     }
 }

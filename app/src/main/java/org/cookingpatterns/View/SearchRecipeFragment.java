@@ -1,98 +1,133 @@
 package org.cookingpatterns.View;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.AdapterView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.SearchView;
+import android.widget.Toast;
+import com.google.inject.Inject;
+import org.cookingpatterns.EventMessages.OnDisplayRecipeClick;
+import org.cookingpatterns.EventMessages.OnEditRecipeClick;
+import org.cookingpatterns.EventMessages.OnNewRecipeClick;
+import org.cookingpatterns.EventMessages.OnSearchRequestClick;
+import org.cookingpatterns.Model.Recipe;
 import org.cookingpatterns.R;
-
+import java.util.ArrayList;
+import roboguice.RoboGuice;
+import roboguice.event.EventManager;
 import roboguice.fragment.RoboFragment;
 import roboguice.inject.InjectView;
 
 
-public class SearchRecipeFragment extends RoboFragment {
+public class SearchRecipeFragment extends Fragment
+{
 
-    //@InjectView(R.id.text1) TextView nameTextView;
+    @InjectView(R.id.searchView) private SearchView SearchField;
+    @InjectView(R.id.resultList) private ListView ResultList;
+    @InjectView(R.id.fab)        private FloatingActionButton AddButton;
 
-    private OnFragmentInteractionListener mListener;
+    @Inject
+    private EventManager eventManager;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchRecipeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SearchRecipeFragment newInstance(String param1, String param2) {
+    public static SearchRecipeFragment CreateFragment()
+    {
         SearchRecipeFragment fragment = new SearchRecipeFragment();
-        Bundle args = new Bundle();
-        //args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     public SearchRecipeFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
         if (getArguments() != null) {
+            //TODO RestoreState
             //mParam1 = getArguments().getString(ARG_PARAM1);
             //mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         return inflater.inflate(R.layout.fragment_search_recipe, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        RoboGuice.getInjector(getActivity()).injectViewMembers(this);
+
+        ArrayList<Recipe> list = new ArrayList<Recipe>();
+        for (int i = 0; i < 10; i++)
+        {
+            Recipe res = new Recipe();
+            res.setName("Eierspeiß");
+            res.setRating(2);
+            res.setTime("00:10");
+            list.add(res);
+        }
+
+        ResultList.setAdapter(new RecipeListAdapter(getActivity().getApplication(), list));
+
+        ResultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                eventManager.fire(new OnDisplayRecipeClick((Recipe) parent.getItemAtPosition(position)));
+            }
+        });
+        ResultList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                eventManager.fire(new OnEditRecipeClick((Recipe) parent.getItemAtPosition(position)));
+                return true;
+            }
+        });
+
+        AddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eventManager.fire(new OnNewRecipeClick());
+            }
+        });
+
+        SearchField.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eventManager.fire(new OnSearchRequestClick(SearchField.getQuery()));
+            }
+        });
+    }
+
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState)
+    {
+        super.onViewStateRestored(savedInstanceState);
+        Log.i("SearchRecipeFragment", "onViewStateRestored");
+        if(savedInstanceState != null)
+        {
+            SearchField.setQuery(savedInstanceState.getString("Query"), false);
         }
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putString("Query", SearchField.getQuery().toString());
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+        Log.i("SearchRecipeFragment", "onSaveInstanceState");
     }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
-
 }

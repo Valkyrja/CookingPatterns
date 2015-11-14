@@ -7,7 +7,7 @@
     android:padding="10dp"
     android:clickable="false"
     android:background="@android:drawable/btn_default"
-    android:backgroundTint="#f0f0f0">
+    android:backgroundTint="#e8ead9">
 
     <ImageView
         android:layout_width="80dp"
@@ -55,7 +55,9 @@
                 android:id="@+id/rating"
                 style="@style/smallRatingBar"
                 android:numStars="5"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:stepSize="1"
+                android:isIndicator="true" />
         </LinearLayout>
 
     </LinearLayout>

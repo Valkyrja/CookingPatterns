@@ -1,8 +1,15 @@
 package org.cookingpatterns.Model;
 
-public class ImageInfo
+import java.io.Serializable;
+
+public class ImageInfo implements Serializable
 {
-  protected String imagePath;
+  public String imagePath;
+
+  public ImageInfo(String path)
+  {
+    imagePath = path;
+  }
 
   public Object GetImage()
   {
