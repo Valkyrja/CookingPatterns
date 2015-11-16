@@ -6,6 +6,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.cookingpatterns.DAL.SqlLiteDataProvider;
 import org.cookingpatterns.EventMessages.OnDisplayRecipeClick;
 import org.cookingpatterns.EventMessages.OnEditRecipeClick;
 import org.cookingpatterns.EventMessages.OnNewRecipeClick;
@@ -13,11 +14,16 @@ import org.cookingpatterns.EventMessages.OnProvideSearchResultEvent;
 import org.cookingpatterns.EventMessages.OnRecalculatePortionsClick;
 import org.cookingpatterns.EventMessages.OnSaveRecipeClick;
 import org.cookingpatterns.EventMessages.OnSearchRequestClick;
+import org.cookingpatterns.Model.DataLoader;
+import org.cookingpatterns.Model.DataLoaderManager;
+import org.cookingpatterns.Model.IDataCallback;
 import org.cookingpatterns.Model.Recipe;
+import org.cookingpatterns.Model.RecipeLoader;
 import org.cookingpatterns.View.DisplayRecipeFragment;
 import org.cookingpatterns.View.EditRecipeFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import roboguice.activity.RoboActivity;
 import roboguice.event.Observes;
@@ -33,9 +39,34 @@ public class Controler extends RoboActivity
         getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
-                Log.i("Controler","onBackStackChanged");
+                Log.i("Controler", "onBackStackChanged");
             }
         });
+
+
+        //getSupportLoaderManager()
+        //TODO thi sis only a first test
+        DataLoader loader = new RecipeLoader(this, new SqlLiteDataProvider(this), null); //TODO add search parameters
+        DataLoaderManager.init(getLoaderManager(), DataLoaderManager.RECIPE_LOADER_ID, loader, new IDataCallback() {
+            @Override
+            public void onFailure(Exception ex) {
+                Log.i("Loader", "RecipeLoaderFailure");
+            }
+
+            @Override
+            public void onSuccess(Object result) {
+                Log.i("Loader", "RecipeLoaderSuccess");
+
+                List<Recipe> list = (List<Recipe>)result;
+
+                for( Recipe r : list)
+                {
+                    Log.i("Loader", r.getId().toString() + ": " + r.getName());
+                }
+
+            }
+        });
+
     }
 
     private void OnNewRecipeClicked(@Observes OnNewRecipeClick event) {

@@ -8,13 +8,13 @@ import android.database.sqlite.SQLiteDatabase;
 import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Model.Recipe;
 
-import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Created by Andreas on 10.11.2015.
  */
-public class SqlLiteDataProvider implements DataProvider {
+public class SqlLiteDataProvider implements IDataProvider {
 
     private Context _context;
 
@@ -26,9 +26,14 @@ public class SqlLiteDataProvider implements DataProvider {
 
     @Override
     public List<Recipe> getRecipeList() {
-      // new SqlLiteHelper();
-        return null;
+        List<Recipe> list = new LinkedList<Recipe>();
 
+        Recipe recipe = new Recipe();
+        recipe.setName("test");
+
+        list.add(recipe);
+
+        return list;
     }
 
     @Override
@@ -62,6 +67,7 @@ public class SqlLiteDataProvider implements DataProvider {
         catch (SQLException sqlException)
         {
 
+
         }
         finally {
             writableDatabase.endTransaction();
@@ -75,7 +81,14 @@ public class SqlLiteDataProvider implements DataProvider {
 
     @Override
     public List<Ingredient> getIngredientList() {
-        return null;
+        List<Ingredient> list = new LinkedList<Ingredient>();
+
+        Ingredient ingredient = new Ingredient();
+        ingredient.setName("test2");
+
+        list.add(ingredient);
+
+        return list;
     }
 
     @Override

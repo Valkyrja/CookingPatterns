@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by Andreas on 10.11.2015.
  */
-public interface DataProvider {
+public interface IDataProvider {
 
     List<Recipe> getRecipeList();
 
