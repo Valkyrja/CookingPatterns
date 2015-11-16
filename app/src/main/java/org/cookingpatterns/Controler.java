@@ -6,6 +6,10 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import com.google.inject.name.Names;
+
 import org.cookingpatterns.DAL.SqlLiteDataProvider;
 import org.cookingpatterns.EventMessages.OnDisplayRecipeClick;
 import org.cookingpatterns.EventMessages.OnEditRecipeClick;
@@ -26,13 +30,20 @@ import org.cookingpatterns.View.EditRecipeFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import roboguice.RoboGuice;
 import roboguice.activity.RoboActivity;
+import roboguice.config.DefaultRoboModule;
+import roboguice.event.EventManager;
 import roboguice.event.Observes;
 import roboguice.inject.ContentView;
 
 @ContentView(R.layout.activity_controler)
 public class Controler extends RoboActivity
 {
+
+    @Inject
+    private EventManager eventManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +55,7 @@ public class Controler extends RoboActivity
             }
         });
 
-
+        //RoboGuice.getInjector(get).injectViewMembers(this);
         //getSupportLoaderManager()
         //TODO thi sis only a first test
 
