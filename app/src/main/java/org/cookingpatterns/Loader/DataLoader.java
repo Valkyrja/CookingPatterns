@@ -6,12 +6,14 @@ import android.os.Bundle;
 
 import com.google.inject.Inject;
 
+import org.cookingpatterns.DAL.IDataProvider;
+
 import roboguice.event.EventManager;
 
 /**
  * Created by Andreas on 16.11.2015.
  */
-public abstract class DataLoader<D, IDataProvider>  extends AsyncTaskLoader<DataResponse<D>> {
+public abstract class DataLoader<D>  extends AsyncTaskLoader<DataResponse<D>> {
 
     @Inject
     protected EventManager eventManager;

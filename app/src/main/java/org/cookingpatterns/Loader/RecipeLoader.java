@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Andreas on 16.11.2015.
  */
 
-public class RecipeLoader extends DataLoader<List<Recipe>, IDataProvider> {
+public class RecipeLoader extends DataLoader<List<Recipe>> {
 
     public RecipeLoader(Context context, IDataProvider service, Bundle args) {
 

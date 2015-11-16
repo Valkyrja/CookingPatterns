@@ -19,10 +19,10 @@ public class DataLoaderManager {
 
     }*/
 
-    public static <D, R> void init(final LoaderManager manager, final int loaderId,
-                                   final DataLoader<D, R> loader, final IDataCallback<D> callback) {
+    public static <D> void init(final LoaderManager manager, final int loaderId,
+                                   final DataLoader<D> loader, final IDataCallback<D> callback) {
 
-        //TODO restart?
+        //TODO or restart?
         manager.initLoader(loaderId, Bundle.EMPTY, new LoaderCallbacks<DataResponse<D>>() {
 
             @Override
