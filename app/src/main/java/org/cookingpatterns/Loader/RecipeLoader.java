@@ -1,11 +1,14 @@
-package org.cookingpatterns.Model;
+package org.cookingpatterns.Loader;
 
 import android.content.Context;
 import android.os.Bundle;
 
 import org.cookingpatterns.DAL.IDataProvider;
+import org.cookingpatterns.EventMessages.OnRecipeListResponseEvent;
+import org.cookingpatterns.Model.Recipe;
 
 import java.util.List;
+
 
 /**
  * Created by Andreas on 16.11.2015.
@@ -21,8 +24,11 @@ public class RecipeLoader extends DataLoader<List<Recipe>, IDataProvider> {
     @Override
     public List<Recipe> call(Bundle args) {
 
-       // Log.d("IssuesLoader", "call");
-
         return mDataProvider.getRecipeList();
+    }
+
+    @Override
+    public void sendEvent(DataResponse<List<Recipe>> data) {
+        eventManager.fire(new OnRecipeListResponseEvent(data));
     }
 }

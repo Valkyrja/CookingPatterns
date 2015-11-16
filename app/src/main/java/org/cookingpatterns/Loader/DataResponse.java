@@ -1,4 +1,4 @@
-package org.cookingpatterns.Model;
+package org.cookingpatterns.Loader;
 
 /**
  * Created by Andreas on 16.11.2015.

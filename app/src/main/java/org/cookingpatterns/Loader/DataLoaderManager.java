@@ -1,4 +1,4 @@
-package org.cookingpatterns.Model;
+package org.cookingpatterns.Loader;
 
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -22,6 +22,7 @@ public class DataLoaderManager {
     public static <D, R> void init(final LoaderManager manager, final int loaderId,
                                    final DataLoader<D, R> loader, final IDataCallback<D> callback) {
 
+        //TODO restart?
         manager.initLoader(loaderId, Bundle.EMPTY, new LoaderCallbacks<DataResponse<D>>() {
 
             @Override

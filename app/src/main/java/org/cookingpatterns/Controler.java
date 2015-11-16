@@ -12,13 +12,14 @@ import org.cookingpatterns.EventMessages.OnEditRecipeClick;
 import org.cookingpatterns.EventMessages.OnNewRecipeClick;
 import org.cookingpatterns.EventMessages.OnProvideSearchResultEvent;
 import org.cookingpatterns.EventMessages.OnRecalculatePortionsClick;
+import org.cookingpatterns.EventMessages.OnRecipeListResponseEvent;
 import org.cookingpatterns.EventMessages.OnSaveRecipeClick;
 import org.cookingpatterns.EventMessages.OnSearchRequestClick;
-import org.cookingpatterns.Model.DataLoader;
-import org.cookingpatterns.Model.DataLoaderManager;
-import org.cookingpatterns.Model.IDataCallback;
+import org.cookingpatterns.Loader.DataLoader;
+import org.cookingpatterns.Loader.DataLoaderManager;
+import org.cookingpatterns.Loader.IDataCallback;
 import org.cookingpatterns.Model.Recipe;
-import org.cookingpatterns.Model.RecipeLoader;
+import org.cookingpatterns.Loader.RecipeLoader;
 import org.cookingpatterns.View.DisplayRecipeFragment;
 import org.cookingpatterns.View.EditRecipeFragment;
 
@@ -46,6 +47,7 @@ public class Controler extends RoboActivity
 
         //getSupportLoaderManager()
         //TODO thi sis only a first test
+
         DataLoader loader = new RecipeLoader(this, new SqlLiteDataProvider(this), null); //TODO add search parameters
         DataLoaderManager.init(getLoaderManager(), DataLoaderManager.RECIPE_LOADER_ID, loader, new IDataCallback() {
             @Override
@@ -67,6 +69,11 @@ public class Controler extends RoboActivity
             }
         });
 
+    }
+
+    private void onRecipeListLoadedEvent(@Observes OnRecipeListResponseEvent event)
+    {
+        Log.i("Loader", "OnRecipeListResponseEvent");
     }
 
     private void OnNewRecipeClicked(@Observes OnNewRecipeClick event) {
