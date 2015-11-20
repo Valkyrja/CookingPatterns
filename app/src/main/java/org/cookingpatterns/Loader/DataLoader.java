@@ -29,8 +29,7 @@ public abstract class DataLoader<D>  extends AsyncTaskLoader<DataResponse<D>> {
         super(context);
         mDataProvider = dataProvider;
         mArgs = args;
-      RoboGuice.getInjector(getContext()).injectMembers(this);
-
+      RoboGuice.getInjector(context).injectMembers(this);
     }
 
     @Override

@@ -19,7 +19,7 @@ public class Recipe implements Serializable
     public ImageInfo Image;
     public Integer Rating;
 
-    public List<Ingredient> ingredients; //TODO replace with other datastructure
+    public List<Ingredient> ingredients;
 
     public String Description;
 

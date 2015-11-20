@@ -22,6 +22,7 @@ import org.cookingpatterns.EventMessages.OnDisplayRecipeClick;
 import org.cookingpatterns.EventMessages.OnEditRecipeClick;
 import org.cookingpatterns.EventMessages.OnNewRecipeClick;
 import org.cookingpatterns.EventMessages.OnProvideSearchResultEvent;
+import org.cookingpatterns.EventMessages.OnRecipeListResponseEvent;
 import org.cookingpatterns.EventMessages.OnSaveRecipeClick;
 import org.cookingpatterns.EventMessages.OnSearchRequestClick;
 import org.cookingpatterns.Model.Recipe;
@@ -141,5 +142,10 @@ public class SearchRecipeFragment extends Fragment
         Log.i("SearchRecipeFragment", "OnDisplayRecipeClicked");
         RecipeAdapter.clear();
         RecipeAdapter.addAll(event.GetResult());
+    }
+
+    private void onRecipeListLoadedEvent(@Observes OnRecipeListResponseEvent event)
+    {
+        Log.i("Loader", "OnRecipeListResponseEvent");
     }
 }

@@ -41,8 +41,8 @@ import roboguice.inject.ContentView;
 public class Controler extends RoboActivity
 {
 
-    @Inject
-    private EventManager eventManager;
+//    @Inject
+//    private EventManager eventManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,10 +82,7 @@ public class Controler extends RoboActivity
 
     }
 
-    private void onRecipeListLoadedEvent(@Observes OnRecipeListResponseEvent event)
-    {
-        Log.i("Loader", "OnRecipeListResponseEvent");
-    }
+
 
     private void OnNewRecipeClicked(@Observes OnNewRecipeClick event) {
         Log.i("Controler", "OnNewRecipeClicked");

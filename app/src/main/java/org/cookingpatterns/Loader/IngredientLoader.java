@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class IngredientLoader extends DataLoader<List<Ingredient>> {
 
+
+
     public IngredientLoader(Context context, IDataProvider service, Bundle args) {
 
         super(context, service, args);
