@@ -7,7 +7,8 @@ import android.provider.BaseColumns;
  */
 public abstract class RecipeIngredientEntry implements BaseColumns {
     public static final String TABLE_NAME = "RecipeIngredient";
-    public static final String COLUMN_NAME_RECIPEID = "RecipeId";
-    public static final String COLUMN_NAME_INGREDIENTID = "IngredientId";
-    public static final String COLUMN_NAME_AMOUNT = "Amount";
+
+    public static final SqlLiteColumn COLUMN_RECIPEID = new SqlLiteColumn("RecipeId", SqlLiteDataTypes.UUID);
+    public static final SqlLiteColumn COLUMN_INGREDIENTID = new SqlLiteColumn("IngredientId", SqlLiteDataTypes.UUID);
+    public static final SqlLiteColumn COLUMN_AMOUNT = new SqlLiteColumn("Amount", SqlLiteDataTypes.REAL);
 }

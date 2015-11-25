@@ -1,15 +1,12 @@
 package org.cookingpatterns.DAL.SqlLite;
 
-import android.util.Pair;
-
 /**
  * Created by Andreas on 20.11.2015.
  */
 public abstract class IngredientEntry {
     public static final String TABLE_NAME = "Ingredient";
-    public static final String COLUMN_NAME_ID = "Id";
-    public static final String COLUMN_NAME_NAME = "Name";
-    public static final String COLUMN_NAME_UNIT = "UnitOfMeasure";
 
-    public static final SqlLiteColumn Id = new SqlLiteColumn("Id", SqlLiteDataTypes.UUID);
+    public static final SqlLiteColumn COLUMN_ID = new SqlLiteColumn("Id", SqlLiteDataTypes.UUID);
+    public static final SqlLiteColumn COLUMN_NAME = new SqlLiteColumn("Name", SqlLiteDataTypes.TEXT);
+    public static final SqlLiteColumn COLUMN_UNIT = new SqlLiteColumn("UnitOfMeasure", SqlLiteDataTypes.INTEGER);
 }

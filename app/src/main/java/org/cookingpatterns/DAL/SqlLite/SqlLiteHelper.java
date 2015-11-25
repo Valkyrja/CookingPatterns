@@ -24,7 +24,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
     {
         if(_instance == null)
         {
-          //  context.deleteDatabase(DATABASE_NAME);
+           //context.deleteDatabase(DATABASE_NAME); //only for testing
             _instance = new SqlLiteHelper(context.getApplicationContext());
         }
         return _instance;
@@ -35,7 +35,7 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
         Log.d("SqlLite", "create Database");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS " + RecipeEntry.TABLE_NAME + "( " +
-                RecipeEntry.COLUMN_ID.Name +" BLOB NOT NULL PRIMARY KEY, " +
+                RecipeEntry.COLUMN_ID.Name +" TEXT NOT NULL PRIMARY KEY, " +
                 RecipeEntry.COLUMN_NAME.Name + " TEXT NOT NULL, " +
                 RecipeEntry.COLUMN_CATEGORY.Name + " TEXT NOT NULL, " +
                 RecipeEntry.COLUMN_DESCRIPTION.Name + " TEXT NOT NULL, " +
@@ -44,16 +44,16 @@ public class SqlLiteHelper extends SQLiteOpenHelper {
                 RecipeEntry.COLUMN_TIME.Name +" TEXT NOT NULL);");
         //TODO image
         db.execSQL("CREATE TABLE IF NOT EXISTS " + IngredientEntry.TABLE_NAME + "( " +
-                IngredientEntry.COLUMN_NAME_ID + " BLOB NOT NULL PRIMARY KEY, "+
-                IngredientEntry.COLUMN_NAME_NAME + " TEXT NOT NULL, "+
-                IngredientEntry.COLUMN_NAME_UNIT + " INTEGER NOT NULL);");
+                IngredientEntry.COLUMN_ID.Name + " TEXT NOT NULL PRIMARY KEY, "+
+                IngredientEntry.COLUMN_NAME.Name + " TEXT NOT NULL, "+
+                IngredientEntry.COLUMN_UNIT.Name + " INTEGER NOT NULL);");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS " + RecipeIngredientEntry.TABLE_NAME + "( " +
-                RecipeIngredientEntry.COLUMN_NAME_RECIPEID + " BLOB NOT NULL, " +
-                RecipeIngredientEntry.COLUMN_NAME_INGREDIENTID + " TEXT NOT NULL, " +
-                RecipeIngredientEntry.COLUMN_NAME_AMOUNT + " REAL NOT NULL, " +
-                "PRIMARY KEY ("+RecipeIngredientEntry.COLUMN_NAME_RECIPEID + ", " +
-                RecipeIngredientEntry.COLUMN_NAME_INGREDIENTID+"));");
+                RecipeIngredientEntry.COLUMN_RECIPEID.Name + " TEXT NOT NULL, " +
+                RecipeIngredientEntry.COLUMN_INGREDIENTID.Name + " TEXT NOT NULL, " +
+                RecipeIngredientEntry.COLUMN_AMOUNT.Name + " REAL NOT NULL, " +
+                "PRIMARY KEY ("+RecipeIngredientEntry.COLUMN_RECIPEID.Name + ", " +
+                RecipeIngredientEntry.COLUMN_INGREDIENTID.Name+"));");
     }
 
     @Override

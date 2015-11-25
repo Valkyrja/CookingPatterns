@@ -14,8 +14,6 @@ import java.util.List;
  */
 public class IngredientLoader extends DataLoader<List<Ingredient>> {
 
-
-
     public IngredientLoader(Context context, IDataProvider service, Bundle args) {
 
         super(context, service, args);
@@ -23,8 +21,6 @@ public class IngredientLoader extends DataLoader<List<Ingredient>> {
 
     @Override
     public List<Ingredient> call(Bundle args) {
-
-        // Log.d("IssuesLoader", "call");
 
         return mDataProvider.getIngredientList();
     }

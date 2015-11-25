@@ -5,12 +5,10 @@ import android.content.Context;
 import android.os.Bundle;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 import org.cookingpatterns.DAL.IDataProvider;
 
 import roboguice.RoboGuice;
-import roboguice.config.DefaultRoboModule;
 import roboguice.event.EventManager;
 
 /**

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 
 import org.cookingpatterns.DAL.IDataProvider;
-import org.cookingpatterns.EventMessages.OnProvideSearchResultEvent;
 import org.cookingpatterns.EventMessages.OnRecipeListResponseEvent;
 import org.cookingpatterns.Model.Recipe;
 
@@ -31,8 +30,6 @@ public class RecipeLoader extends DataLoader<List<Recipe>> {
 
     @Override
     public void sendEvent(DataResponse<List<Recipe>> data) {
-        Log.i("Loader", "SendEvent");
         eventManager.fire(new OnRecipeListResponseEvent(data));
-        //eventManager.fire(new OnProvideSearchResultEvent(data.getResult()));
     }
 }

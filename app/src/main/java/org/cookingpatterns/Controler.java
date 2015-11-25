@@ -6,17 +6,12 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-import com.google.inject.name.Names;
-
 import org.cookingpatterns.DAL.SqlLiteDataProvider;
 import org.cookingpatterns.EventMessages.OnDisplayRecipeClick;
 import org.cookingpatterns.EventMessages.OnEditRecipeClick;
 import org.cookingpatterns.EventMessages.OnNewRecipeClick;
 import org.cookingpatterns.EventMessages.OnProvideSearchResultEvent;
 import org.cookingpatterns.EventMessages.OnRecalculatePortionsClick;
-import org.cookingpatterns.EventMessages.OnRecipeListResponseEvent;
 import org.cookingpatterns.EventMessages.OnSaveRecipeClick;
 import org.cookingpatterns.EventMessages.OnSearchRequestClick;
 import org.cookingpatterns.Loader.DataLoader;
@@ -30,10 +25,7 @@ import org.cookingpatterns.View.EditRecipeFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import roboguice.RoboGuice;
 import roboguice.activity.RoboActivity;
-import roboguice.config.DefaultRoboModule;
-import roboguice.event.EventManager;
 import roboguice.event.Observes;
 import roboguice.inject.ContentView;
 
