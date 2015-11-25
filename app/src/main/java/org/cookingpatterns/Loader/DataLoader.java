@@ -6,8 +6,6 @@ import android.os.Bundle;
 
 import com.google.inject.Inject;
 
-import org.cookingpatterns.DAL.IDataProvider;
-
 import roboguice.RoboGuice;
 import roboguice.event.EventManager;
 
@@ -20,8 +18,9 @@ public abstract class DataLoader<D>  extends AsyncTaskLoader<DataResponse<D>> {
     protected EventManager eventManager;
 
     protected DataResponse<D> response;
-    private Bundle mArgs;
     protected Context mContext;
+
+    private Bundle mArgs;
 
     public DataLoader(Context context, Bundle args) {
         super(context);
@@ -32,14 +31,11 @@ public abstract class DataLoader<D>  extends AsyncTaskLoader<DataResponse<D>> {
 
     @Override
     public DataResponse<D> loadInBackground() {
-
         try {
-
             final D data = call(mArgs);
             response = DataResponse.ok(data);
 
         } catch (Exception ex) {
-
             response = DataResponse.error(ex);
         }
 
@@ -53,12 +49,10 @@ public abstract class DataLoader<D>  extends AsyncTaskLoader<DataResponse<D>> {
         super.onStartLoading();
 
         if (response != null) {
-
             deliverResult(response);
         }
 
         if (takeContentChanged() || response == null) {
-
             forceLoad();
         }
     }
@@ -67,7 +61,6 @@ public abstract class DataLoader<D>  extends AsyncTaskLoader<DataResponse<D>> {
     protected void onReset() { //todo add parameters?
 
         super.onReset();
-
         response = null;
     }
 

@@ -13,6 +13,9 @@ public class DataLoaderManager {
 
     public static final int RECIPE_LOADER_ID = 1;
     public static final int INGREDIENT_LOADER_ID = 2;
+    public static final int ADDRECIPE_LOADER_ID = 3;
+    public static final int UPDATERECIPE_LOADER_ID = 4;
+    public static final int ADDINGREDIENT_LOADER_ID = 5;
 
     //TODO automatic get id ???
    /* public static int GetLoaderId(DataLoader loader)

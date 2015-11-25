@@ -6,7 +6,6 @@ package org.cookingpatterns.Loader;
 public class DataResponse<D> {
 
     private Exception mException;
-
     private D mResult;
 
     static <D> DataResponse<D> ok(D data){

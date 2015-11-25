@@ -15,7 +15,6 @@ import java.util.List;
 public class IngredientLoader extends DataLoader<List<Ingredient>> {
 
     public IngredientLoader(Context context, Bundle args) {
-
         super(context, args);
     }
 

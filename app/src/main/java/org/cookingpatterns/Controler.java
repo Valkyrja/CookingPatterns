@@ -6,7 +6,6 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 
-import org.cookingpatterns.DAL.SqlLite.SqlLiteDataProvider;
 import org.cookingpatterns.EventMessages.OnDisplayRecipeClick;
 import org.cookingpatterns.EventMessages.OnEditRecipeClick;
 import org.cookingpatterns.EventMessages.OnNewRecipeClick;
@@ -17,8 +16,8 @@ import org.cookingpatterns.EventMessages.OnSearchRequestClick;
 import org.cookingpatterns.Loader.DataLoader;
 import org.cookingpatterns.Loader.DataLoaderManager;
 import org.cookingpatterns.Loader.IDataCallback;
-import org.cookingpatterns.Model.Recipe;
 import org.cookingpatterns.Loader.RecipeLoader;
+import org.cookingpatterns.Model.Recipe;
 import org.cookingpatterns.View.DisplayRecipeFragment;
 import org.cookingpatterns.View.EditRecipeFragment;
 
