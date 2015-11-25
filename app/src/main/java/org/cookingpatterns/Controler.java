@@ -6,7 +6,7 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 
-import org.cookingpatterns.DAL.SqlLiteDataProvider;
+import org.cookingpatterns.DAL.SqlLite.SqlLiteDataProvider;
 import org.cookingpatterns.EventMessages.OnDisplayRecipeClick;
 import org.cookingpatterns.EventMessages.OnEditRecipeClick;
 import org.cookingpatterns.EventMessages.OnNewRecipeClick;
@@ -51,7 +51,7 @@ public class Controler extends RoboActivity
         //getSupportLoaderManager()
         //TODO thi sis only a first test
 
-        DataLoader loader = new RecipeLoader(this, new SqlLiteDataProvider(this), null); //TODO add search parameters
+        DataLoader loader = new RecipeLoader(this, null); //TODO add search parameters
         DataLoaderManager.init(getLoaderManager(), DataLoaderManager.RECIPE_LOADER_ID, loader, new IDataCallback() {
             @Override
             public void onFailure(Exception ex) {

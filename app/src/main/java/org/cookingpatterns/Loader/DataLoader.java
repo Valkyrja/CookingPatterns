@@ -20,14 +20,14 @@ public abstract class DataLoader<D>  extends AsyncTaskLoader<DataResponse<D>> {
     protected EventManager eventManager;
 
     protected DataResponse<D> response;
-    protected final IDataProvider mDataProvider;
     private Bundle mArgs;
+    protected Context mContext;
 
-    public DataLoader(Context context, IDataProvider dataProvider, Bundle args) {
+    public DataLoader(Context context, Bundle args) {
         super(context);
-        mDataProvider = dataProvider;
         mArgs = args;
-      RoboGuice.getInjector(context).injectMembers(this);
+        mContext = context;
+        RoboGuice.getInjector(context).injectMembers(this);
     }
 
     @Override

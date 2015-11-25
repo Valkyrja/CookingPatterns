@@ -1,4 +1,4 @@
-package org.cookingpatterns.DAL;
+package org.cookingpatterns.DAL.SqlLite;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
+import org.cookingpatterns.DAL.IDataProvider;
 import org.cookingpatterns.DAL.SqlLite.IngredientEntry;
 import org.cookingpatterns.DAL.SqlLite.RecipeEntry;
 import org.cookingpatterns.DAL.SqlLite.RecipeIngredientEntry;

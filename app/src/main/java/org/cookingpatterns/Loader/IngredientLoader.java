@@ -3,7 +3,7 @@ package org.cookingpatterns.Loader;
 import android.content.Context;
 import android.os.Bundle;
 
-import org.cookingpatterns.DAL.IDataProvider;
+import org.cookingpatterns.DAL.DataProviderManager;
 import org.cookingpatterns.EventMessages.OnIngredientListResponseEvent;
 import org.cookingpatterns.Model.Ingredient;
 
@@ -14,15 +14,15 @@ import java.util.List;
  */
 public class IngredientLoader extends DataLoader<List<Ingredient>> {
 
-    public IngredientLoader(Context context, IDataProvider service, Bundle args) {
+    public IngredientLoader(Context context, Bundle args) {
 
-        super(context, service, args);
+        super(context, args);
     }
 
     @Override
     public List<Ingredient> call(Bundle args) {
 
-        return mDataProvider.getIngredientList();
+        return DataProviderManager.getInstance(mContext).getActiveDataProvider().getIngredientList();
     }
 
     @Override
