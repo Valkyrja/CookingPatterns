@@ -8,20 +8,20 @@ public class DataResponse<D> {
     private Exception mException;
     private D mResult;
 
-    static <D> DataResponse<D> ok(D data){
+    static <D> DataResponse<D> ok(D data) {
 
         DataResponse<D> response = new DataResponse<D>();
         response.mResult = data;
 
-        return  response;
+        return response;
     }
 
-    static <D> DataResponse<D> error(Exception ex){
+    static <D> DataResponse<D> error(Exception ex) {
 
         DataResponse<D> response = new DataResponse<D>();
         response.mException = ex;
 
-        return  response;
+        return response;
     }
 
     public boolean hasError() {

@@ -8,14 +8,11 @@ import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import org.cookingpatterns.DAL.IDataProvider;
-import org.cookingpatterns.DAL.SqlLite.IngredientEntry;
-import org.cookingpatterns.DAL.SqlLite.RecipeEntry;
-import org.cookingpatterns.DAL.SqlLite.RecipeIngredientEntry;
-import org.cookingpatterns.DAL.SqlLite.SqlLiteColumn;
-import org.cookingpatterns.DAL.SqlLite.SqlLiteHelper;
 import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Model.Recipe;
 import org.cookingpatterns.Model.UnitOfMeasure;
+import org.cookingpatterns.Parsing.RootNode;
+import org.cookingpatterns.Parsing.Node;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -28,8 +25,7 @@ public class SqlLiteDataProvider implements IDataProvider {
 
     private Context _context;
 
-    public SqlLiteDataProvider(Context context)
-    {
+    public SqlLiteDataProvider(Context context) {
         _context = context;
     }
 
@@ -57,8 +53,7 @@ public class SqlLiteDataProvider implements IDataProvider {
 
         List<Recipe> list = new LinkedList<>();
 
-        if(cursor.moveToFirst())
-        {
+        if (cursor.moveToFirst()) {
             do {
                 UUID id = (UUID) mapColumn(cursor, RecipeEntry.COLUMN_ID);
                 String name = (String) mapColumn(cursor, RecipeEntry.COLUMN_NAME);
@@ -72,7 +67,7 @@ public class SqlLiteDataProvider implements IDataProvider {
                 recipe.setName(name);
                 recipe.setDescription(description);
                 recipe.setCategory(category);
-              //  recipe.setIngredients();
+                //  recipe.setIngredients();
                 recipe.setPortions(portions);
                 recipe.setRating(rating);
                 recipe.setTime(Time);
@@ -83,10 +78,10 @@ public class SqlLiteDataProvider implements IDataProvider {
         cursor.close();
 
         //add ingredients to recipes
-        for (Recipe recipe: list) {
+        for (Recipe recipe : list) {
 
             String sql = "SELECT " +
-                    RecipeIngredientEntry.COLUMN_AMOUNT.Name+ ", " +
+                    RecipeIngredientEntry.COLUMN_AMOUNT.Name + ", " +
                     IngredientEntry.COLUMN_ID.Name + ", " +
                     IngredientEntry.COLUMN_NAME.Name + ", " +
                     IngredientEntry.COLUMN_UNIT.Name + " " +
@@ -95,10 +90,9 @@ public class SqlLiteDataProvider implements IDataProvider {
                     " = " + IngredientEntry.TABLE_NAME + "." + IngredientEntry.COLUMN_ID.Name + " " +
                     "WHERE " + RecipeIngredientEntry.TABLE_NAME + "." + RecipeIngredientEntry.COLUMN_RECIPEID.Name + " = ?";
 
-            cursor = readableDatabase.rawQuery(sql, new String[] {recipe.getId().toString()});
+            cursor = readableDatabase.rawQuery(sql, new String[]{recipe.getId().toString()});
 
-            if(cursor.moveToFirst())
-            {
+            if (cursor.moveToFirst()) {
                 LinkedList<Ingredient> ingredientList = new LinkedList<>();
                 do {
                     UUID id = (UUID) mapColumn(cursor, IngredientEntry.COLUMN_ID);
@@ -123,6 +117,19 @@ public class SqlLiteDataProvider implements IDataProvider {
     }
 
     @Override
+    public List<Recipe> getRecipeList(RootNode searchTree) {
+        List<Recipe> list = getRecipeList();
+
+        SqlLiteSyntaxTreeVisitor visitor = new SqlLiteSyntaxTreeVisitor();
+        for (Node node : searchTree) {
+            node.acceptVisitor(visitor);
+        }
+
+
+        return list;
+    }
+
+    @Override
     public void addRecipe(Recipe recipe) {
 
         SQLiteDatabase writableDatabase = SqlLiteHelper.getInstance(_context).getWritableDatabase();
@@ -139,10 +146,10 @@ public class SqlLiteDataProvider implements IDataProvider {
             values.put(RecipeEntry.COLUMN_RATING.Name, recipe.getRating());
             values.put(RecipeEntry.COLUMN_TIME.Name, recipe.getTime());
             //values.put("", recipe.getImage().GetImag) //TODO image
-            writableDatabase.insertOrThrow(RecipeEntry.TABLE_NAME , null, values);
+            writableDatabase.insertOrThrow(RecipeEntry.TABLE_NAME, null, values);
 
 
-            for (Ingredient ingredient: recipe.getIngredients()) {
+            for (Ingredient ingredient : recipe.getIngredients()) {
                 values.clear();
                 values.put(RecipeIngredientEntry.COLUMN_RECIPEID.Name, recipe.getId().toString());
                 values.put(RecipeIngredientEntry.COLUMN_INGREDIENTID.Name, ingredient.getId().toString());
@@ -151,8 +158,7 @@ public class SqlLiteDataProvider implements IDataProvider {
                 writableDatabase.insertOrThrow(RecipeIngredientEntry.TABLE_NAME, null, values);
             }
             writableDatabase.setTransactionSuccessful();
-        }
-        finally {
+        } finally {
             writableDatabase.endTransaction();
         }
     }
@@ -165,14 +171,14 @@ public class SqlLiteDataProvider implements IDataProvider {
         try {
             writableDatabase.beginTransaction();
 
-           String sql = "UPDATE " + RecipeEntry.TABLE_NAME + " SET " +
-                   RecipeEntry.COLUMN_NAME.Name+ " = ? " +
-                   RecipeEntry.COLUMN_CATEGORY.Name + " = ? " +
-                   RecipeEntry.COLUMN_DESCRIPTION.Name + " = ? " +
-                   RecipeEntry.COLUMN_PORTIONS.Name + " = ? " +
-                   RecipeEntry.COLUMN_RATING.Name + " = ? " +
-                   RecipeEntry.COLUMN_TIME.Name + " = ? " +
-                   "WHERE " + RecipeEntry.COLUMN_ID.Name + " = ?";
+            String sql = "UPDATE " + RecipeEntry.TABLE_NAME + " SET " +
+                    RecipeEntry.COLUMN_NAME.Name + " = ? " +
+                    RecipeEntry.COLUMN_CATEGORY.Name + " = ? " +
+                    RecipeEntry.COLUMN_DESCRIPTION.Name + " = ? " +
+                    RecipeEntry.COLUMN_PORTIONS.Name + " = ? " +
+                    RecipeEntry.COLUMN_RATING.Name + " = ? " +
+                    RecipeEntry.COLUMN_TIME.Name + " = ? " +
+                    "WHERE " + RecipeEntry.COLUMN_ID.Name + " = ?";
             SQLiteStatement statement = writableDatabase.compileStatement(sql);
 
             statement.bindString(1, recipe.getName());
@@ -186,8 +192,7 @@ public class SqlLiteDataProvider implements IDataProvider {
             statement.executeUpdateDelete();
 
             writableDatabase.setTransactionSuccessful();
-        }
-        finally {
+        } finally {
             writableDatabase.endTransaction();
         }
 
@@ -200,7 +205,7 @@ public class SqlLiteDataProvider implements IDataProvider {
 
         Cursor cursor = readableDatabase.query(
                 RecipeEntry.TABLE_NAME,                    // The table to query
-                new String[] {
+                new String[]{
                         IngredientEntry.COLUMN_ID.Name,
                         IngredientEntry.COLUMN_NAME.Name,
                         IngredientEntry.COLUMN_UNIT.Name},// The columns to return
@@ -213,8 +218,7 @@ public class SqlLiteDataProvider implements IDataProvider {
 
         List<Ingredient> list = new LinkedList<>();
 
-        if(cursor.moveToFirst())
-        {
+        if (cursor.moveToFirst()) {
             do {
                 UUID id = (UUID) mapColumn(cursor, IngredientEntry.COLUMN_ID);
                 String name = (String) mapColumn(cursor, IngredientEntry.COLUMN_NAME);
@@ -241,26 +245,23 @@ public class SqlLiteDataProvider implements IDataProvider {
             ContentValues values = new ContentValues();
             values.put(IngredientEntry.COLUMN_ID.Name, ingredient.getId().toString());
             values.put(IngredientEntry.COLUMN_NAME.Name, ingredient.getName());
-            values.put(IngredientEntry.COLUMN_UNIT.Name, ingredient.getAmount());
+            values.put(IngredientEntry.COLUMN_UNIT.Name, ingredient.getUnit().ordinal());
 
-            writableDatabase.insertOrThrow(IngredientEntry.TABLE_NAME , null, values);
+            writableDatabase.insertOrThrow(IngredientEntry.TABLE_NAME, null, values);
 
             writableDatabase.setTransactionSuccessful();
-        }
-        finally {
+        } finally {
             writableDatabase.endTransaction();
         }
     }
 
-    private Object mapColumn(Cursor cursor, SqlLiteColumn column)
-    {
+    private Object mapColumn(Cursor cursor, SqlLiteColumn column) {
         int columnIndex = cursor.getColumnIndex(column.Name);
-        switch (column.Type)
-        {
+        switch (column.Type) {
             case UUID:
                 return UUID.fromString(cursor.getString(columnIndex));
-             //   byte[] bytes = cursor.getBlob(columnIndex);
-              //  return UUIDHelper.getFromByteArray(bytes);
+            //   byte[] bytes = cursor.getBlob(columnIndex);
+            //  return UUIDHelper.getFromByteArray(bytes);
             case BLOB:
                 return cursor.getBlob(columnIndex);
             case INTEGER:

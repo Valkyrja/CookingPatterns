@@ -13,27 +13,22 @@ public class DataProviderManager {
 
     private IDataProvider _activeDataProvider;
 
-    private DataProviderManager(Context context)
-    {
+    private DataProviderManager(Context context) {
         _activeDataProvider = new SqlLiteDataProvider(context); //defaultdataprovider
     }
 
-    public static synchronized DataProviderManager getInstance(Context context)
-    {
-        if(_instance == null)
-        {
+    public static synchronized DataProviderManager getInstance(Context context) {
+        if (_instance == null) {
             _instance = new DataProviderManager(context);
         }
         return _instance;
     }
 
-    public IDataProvider getActiveDataProvider()
-    {
+    public IDataProvider getActiveDataProvider() {
         return _activeDataProvider;
     }
 
-    public void setActiveDataProvider(IDataProvider dataProvider)
-    {
+    public void setActiveDataProvider(IDataProvider dataProvider) {
         _activeDataProvider = dataProvider;
     }
 }

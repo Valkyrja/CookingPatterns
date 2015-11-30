@@ -24,7 +24,7 @@ public class DataLoaderManager {
     }*/
 
     public static <D> void init(final LoaderManager manager, final int loaderId,
-                                   final DataLoader<D> loader, final IDataCallback<D> callback) {
+                                final DataLoader<D> loader, final IDataCallback<D> callback) {
 
         //TODO or restart?
         manager.initLoader(loaderId, Bundle.EMPTY, new LoaderCallbacks<DataResponse<D>>() {

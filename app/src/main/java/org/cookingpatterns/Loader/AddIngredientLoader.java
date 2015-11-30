@@ -9,14 +9,14 @@ import org.cookingpatterns.Model.Ingredient;
 /**
  * Created by Andreas on 25.11.2015.
  */
-public class AddIngredientLoader extends DataLoader<Ingredient>  {
+public class AddIngredientLoader extends DataLoader<Ingredient> {
     public AddIngredientLoader(Context context, Bundle args) {
         super(context, args);
     }
 
     @Override
     public Ingredient call(Bundle args) {
-        Ingredient ingredient = (Ingredient)args.get("ingredient");
+        Ingredient ingredient = (Ingredient) args.get("ingredient");
         DataProviderManager.getInstance(mContext).getActiveDataProvider().addIngredient(ingredient);
         return ingredient;
     }

@@ -1,6 +1,5 @@
 package org.cookingpatterns.Interfaces;
 
-public interface ISearchQueryParser
-{
+public interface ISearchQueryParser {
     ILiteralNode ParseString(String searchQuery);
 }

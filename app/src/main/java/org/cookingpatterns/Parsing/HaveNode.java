@@ -2,7 +2,10 @@ package org.cookingpatterns.Parsing;
 
 import org.cookingpatterns.Interfaces.ISyntaxTreeVisitor;
 
-public class RootNode extends Node {
+/**
+ * Created by Andreas on 25.11.2015.
+ */
+public class HaveNode extends Node {
 
 
     @Override

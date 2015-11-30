@@ -1,6 +1,5 @@
 package org.cookingpatterns.Interfaces;
 
-public interface ILiteralNode
-{
+public interface ILiteralNode {
     void acceptVisitor(ISyntaxTreeVisitor visitor);
 }

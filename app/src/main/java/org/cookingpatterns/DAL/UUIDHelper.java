@@ -12,8 +12,7 @@ import java.util.UUID;
 public class UUIDHelper {
 
     //http://stackoverflow.com/a/2983319
-    public static byte[] toByteArray(UUID uuid)
-    {
+    public static byte[] toByteArray(UUID uuid) {
         ByteArrayOutputStream ba = new ByteArrayOutputStream(16);
         DataOutputStream da = new DataOutputStream(ba);
         try {

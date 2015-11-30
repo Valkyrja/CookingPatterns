@@ -12,7 +12,7 @@ import roboguice.event.EventManager;
 /**
  * Created by Andreas on 16.11.2015.
  */
-public abstract class DataLoader<D>  extends AsyncTaskLoader<DataResponse<D>> {
+public abstract class DataLoader<D> extends AsyncTaskLoader<DataResponse<D>> {
 
     @Inject
     protected EventManager eventManager;
