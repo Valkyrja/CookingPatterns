@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import org.cookingpatterns.DAL.DataProviderManager;
+import org.cookingpatterns.EventMessages.OnUpdateRecipeResponseEvent;
 import org.cookingpatterns.Model.Recipe;
 
 /**
@@ -23,7 +24,6 @@ public class UpdateRecipeLoader extends DataLoader<Recipe> {
 
     @Override
     public void sendEvent(DataResponse<Recipe> data) {
-        //   eventManager.fire(new OnRecipeListResponseEvent(data));
-        //TODO fire recipeaupdated event
+           eventManager.fire(new OnUpdateRecipeResponseEvent(data));
     }
 }
