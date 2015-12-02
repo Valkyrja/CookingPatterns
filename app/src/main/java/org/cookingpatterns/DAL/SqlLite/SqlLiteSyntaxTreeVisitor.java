@@ -104,12 +104,12 @@ public class SqlLiteSyntaxTreeVisitor implements ISyntaxTreeVisitor {
     @Override
     public void VisitIngredientNode(IngredientNode node) {
 
-        sql += "AND (i." + IngredientEntry.COLUMN_ID.Name + "  <>  ? OR (i." +
-                IngredientEntry.COLUMN_ID.Name + "  =  ? AND ri." +
+        sql += "AND (i." + IngredientEntry.COLUMN_NAME.Name + "  <>  ? OR (i." +
+                IngredientEntry.COLUMN_NAME.Name + "  =  ? AND ri." +
                 RecipeIngredientEntry.COLUMN_AMOUNT.Name + " < ? )) ";
 
-        sqlParameter.push(node.getIngredient().getId().toString());
-        sqlParameter.push(node.getIngredient().getId().toString());
+        sqlParameter.push(node.getIngredient().getName());
+        sqlParameter.push(node.getIngredient().getName());
         sqlParameter.push(Double.toString(node.getIngredient().getAmount()));
     }
 }

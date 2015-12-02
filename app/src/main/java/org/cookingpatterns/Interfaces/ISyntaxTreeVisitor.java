@@ -1,6 +1,5 @@
 package org.cookingpatterns.Interfaces;
 
-
 import org.cookingpatterns.Parsing.AndNode;
 import org.cookingpatterns.Parsing.CookNode;
 import org.cookingpatterns.Parsing.HaveNode;

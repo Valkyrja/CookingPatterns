@@ -10,6 +10,6 @@ public class HaveNode extends Node {
 
     @Override
     public void acceptVisitor(ISyntaxTreeVisitor visitor) {
-
+        visitor.VisitHaveNode(this);
     }
 }

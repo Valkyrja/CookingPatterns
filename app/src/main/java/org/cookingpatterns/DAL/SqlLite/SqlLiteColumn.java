@@ -7,8 +7,7 @@ public class SqlLiteColumn {
     public String Name;
     public SqlLiteDataTypes Type;
 
-    public SqlLiteColumn(String name,  SqlLiteDataTypes type)
-    {
+    public SqlLiteColumn(String name, SqlLiteDataTypes type) {
         Name = name;
         Type = type;
     }

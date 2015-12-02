@@ -85,9 +85,7 @@ public class SqlLiteDataProvider implements IDataProvider {
         SQLiteDatabase readableDatabase = SqlLiteHelper.getInstance(_context).getReadableDatabase();
         Cursor cursor = readableDatabase.rawQuery(sql, parameterArray);
 
-        List<Recipe> list = mapRecipes(cursor);
-
-        return list;
+        return mapRecipes(cursor);
     }
 
     private void loadIngredientsForRecipes(List<Recipe> recipes, SQLiteDatabase readableDatabase) {

@@ -7,6 +7,6 @@ public class RootNode extends Node {
 
     @Override
     public void acceptVisitor(ISyntaxTreeVisitor visitor) {
-
+        visitor.VisitRootNode(this);
     }
 }
