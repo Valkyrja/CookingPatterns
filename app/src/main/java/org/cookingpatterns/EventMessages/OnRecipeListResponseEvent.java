@@ -12,13 +12,11 @@ public class OnRecipeListResponseEvent {
 
     private DataResponse<List<Recipe>> response;
 
-    public OnRecipeListResponseEvent(DataResponse<List<Recipe>> dataResponse)
-    {
+    public OnRecipeListResponseEvent(DataResponse<List<Recipe>> dataResponse) {
         response = dataResponse;
     }
 
-    public DataResponse<List<Recipe>> getRecipeList()
-    {
+    public DataResponse<List<Recipe>> getRecipeList() {
         return response;
     }
 }

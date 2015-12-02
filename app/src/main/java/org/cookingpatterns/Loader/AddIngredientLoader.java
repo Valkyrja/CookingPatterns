@@ -24,6 +24,6 @@ public class AddIngredientLoader extends DataLoader<Ingredient> {
 
     @Override
     public void sendEvent(DataResponse<Ingredient> data) {
-           eventManager.fire(new OnAddIngredientResponseEvent(data));
+        eventManager.fire(new OnAddIngredientResponseEvent(data));
     }
 }

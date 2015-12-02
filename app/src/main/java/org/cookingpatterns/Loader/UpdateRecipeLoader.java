@@ -24,6 +24,6 @@ public class UpdateRecipeLoader extends DataLoader<Recipe> {
 
     @Override
     public void sendEvent(DataResponse<Recipe> data) {
-           eventManager.fire(new OnUpdateRecipeResponseEvent(data));
+        eventManager.fire(new OnUpdateRecipeResponseEvent(data));
     }
 }

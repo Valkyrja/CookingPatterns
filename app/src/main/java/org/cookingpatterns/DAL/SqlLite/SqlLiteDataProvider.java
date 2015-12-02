@@ -51,6 +51,84 @@ public class SqlLiteDataProvider implements IDataProvider {
                 RecipeEntry.COLUMN_NAME.Name + " ASC"      // The sort order
         );
 
+        List<Recipe> list = mapRecipes(cursor);
+        loadIngredientsForRecipes(list, readableDatabase);
+
+        return list;
+    }
+
+    @Override
+    public List<Recipe> getRecipeList(RootNode searchTree) {
+
+        SqlLiteSyntaxTreeVisitor visitor = new SqlLiteSyntaxTreeVisitor();
+        for (Node node : searchTree) {
+            node.acceptVisitor(visitor);
+        }
+
+        String sqlWhere = visitor.GetSql();
+        LinkedList<String> parameterList = visitor.GetSqlParameter();
+        String[] parameterArray = new String[parameterList.size()];
+        parameterArray = parameterList.toArray(parameterArray);
+
+        String sql = "SELECT r." +
+                RecipeEntry.COLUMN_ID.Name + ", r." +
+                RecipeEntry.COLUMN_NAME.Name + ", r." +
+                RecipeEntry.COLUMN_PORTIONS.Name + ", r." +
+                RecipeEntry.COLUMN_CATEGORY.Name + ", r." +
+                RecipeEntry.COLUMN_DESCRIPTION.Name + ", r." +
+                RecipeEntry.COLUMN_TIME.Name + ", r." +
+                RecipeEntry.COLUMN_RATING.Name + " " +
+                "FROM " + RecipeEntry.TABLE_NAME + " AS r " +
+                "WHERE " + sqlWhere + " " +
+                "ORDER BY r." + RecipeEntry.COLUMN_NAME.Name + " ASC";
+
+        SQLiteDatabase readableDatabase = SqlLiteHelper.getInstance(_context).getReadableDatabase();
+        Cursor cursor = readableDatabase.rawQuery(sql, parameterArray);
+
+        List<Recipe> list = mapRecipes(cursor);
+
+        return list;
+    }
+
+    private void loadIngredientsForRecipes(List<Recipe> recipes, SQLiteDatabase readableDatabase) {
+        //add ingredients to recipes
+        for (Recipe recipe : recipes) {
+
+            String sql = "SELECT " +
+                    RecipeIngredientEntry.COLUMN_AMOUNT.Name + ", " +
+                    IngredientEntry.COLUMN_ID.Name + ", " +
+                    IngredientEntry.COLUMN_NAME.Name + ", " +
+                    IngredientEntry.COLUMN_UNIT.Name + " " +
+                    "FROM " + RecipeIngredientEntry.TABLE_NAME + " INNER JOIN " + IngredientEntry.TABLE_NAME + " ON " +
+                    RecipeIngredientEntry.TABLE_NAME + "." + RecipeIngredientEntry.COLUMN_INGREDIENTID.Name +
+                    " = " + IngredientEntry.TABLE_NAME + "." + IngredientEntry.COLUMN_ID.Name + " " +
+                    "WHERE " + RecipeIngredientEntry.TABLE_NAME + "." + RecipeIngredientEntry.COLUMN_RECIPEID.Name + " = ?";
+
+            Cursor cursor = readableDatabase.rawQuery(sql, new String[]{recipe.getId().toString()});
+
+            if (cursor.moveToFirst()) {
+                LinkedList<Ingredient> ingredientList = new LinkedList<>();
+                do {
+                    UUID id = (UUID) mapColumn(cursor, IngredientEntry.COLUMN_ID);
+                    String name = (String) mapColumn(cursor, IngredientEntry.COLUMN_NAME);
+                    Integer unitInt = (Integer) mapColumn(cursor, IngredientEntry.COLUMN_UNIT);
+                    Double amount = (Double) mapColumn(cursor, RecipeIngredientEntry.COLUMN_AMOUNT);
+
+                    Ingredient ingredient = new Ingredient(id);
+                    ingredient.setName(name);
+                    ingredient.setUnit(UnitOfMeasure.values()[unitInt]);
+                    ingredient.setAmount(amount);
+
+                    ingredientList.add(ingredient);
+                } while (cursor.moveToNext());
+
+                recipe.setIngredients(ingredientList);
+            }
+            cursor.close();
+        }
+    }
+
+    private List<Recipe> mapRecipes(Cursor cursor) {
         List<Recipe> list = new LinkedList<>();
 
         if (cursor.moveToFirst()) {
@@ -76,55 +154,6 @@ public class SqlLiteDataProvider implements IDataProvider {
         }
 
         cursor.close();
-
-        //add ingredients to recipes
-        for (Recipe recipe : list) {
-
-            String sql = "SELECT " +
-                    RecipeIngredientEntry.COLUMN_AMOUNT.Name + ", " +
-                    IngredientEntry.COLUMN_ID.Name + ", " +
-                    IngredientEntry.COLUMN_NAME.Name + ", " +
-                    IngredientEntry.COLUMN_UNIT.Name + " " +
-                    "FROM " + RecipeIngredientEntry.TABLE_NAME + " INNER JOIN " + IngredientEntry.TABLE_NAME + " ON " +
-                    RecipeIngredientEntry.TABLE_NAME + "." + RecipeIngredientEntry.COLUMN_INGREDIENTID.Name +
-                    " = " + IngredientEntry.TABLE_NAME + "." + IngredientEntry.COLUMN_ID.Name + " " +
-                    "WHERE " + RecipeIngredientEntry.TABLE_NAME + "." + RecipeIngredientEntry.COLUMN_RECIPEID.Name + " = ?";
-
-            cursor = readableDatabase.rawQuery(sql, new String[]{recipe.getId().toString()});
-
-            if (cursor.moveToFirst()) {
-                LinkedList<Ingredient> ingredientList = new LinkedList<>();
-                do {
-                    UUID id = (UUID) mapColumn(cursor, IngredientEntry.COLUMN_ID);
-                    String name = (String) mapColumn(cursor, IngredientEntry.COLUMN_NAME);
-                    Integer unitInt = (Integer) mapColumn(cursor, IngredientEntry.COLUMN_UNIT);
-                    Double amount = (Double) mapColumn(cursor, RecipeIngredientEntry.COLUMN_AMOUNT);
-
-                    Ingredient ingredient = new Ingredient(id);
-                    ingredient.setName(name);
-                    ingredient.setUnit(UnitOfMeasure.values()[unitInt]);
-                    ingredient.setAmount(amount);
-
-                    ingredientList.add(ingredient);
-                } while (cursor.moveToNext());
-
-                recipe.setIngredients(ingredientList);
-            }
-            cursor.close();
-        }
-
-        return list;
-    }
-
-    @Override
-    public List<Recipe> getRecipeList(RootNode searchTree) {
-        List<Recipe> list = getRecipeList();
-
-        SqlLiteSyntaxTreeVisitor visitor = new SqlLiteSyntaxTreeVisitor();
-        for (Node node : searchTree) {
-            node.acceptVisitor(visitor);
-        }
-
 
         return list;
     }

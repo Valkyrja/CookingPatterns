@@ -9,13 +9,11 @@ import org.cookingpatterns.Model.Recipe;
 public class OnAddRecipeResponseEvent {
     private DataResponse<Recipe> response;
 
-    public OnAddRecipeResponseEvent(DataResponse<Recipe> dataResponse)
-    {
+    public OnAddRecipeResponseEvent(DataResponse<Recipe> dataResponse) {
         response = dataResponse;
     }
 
-    public DataResponse<Recipe> getNewRecipe()
-    {
+    public DataResponse<Recipe> getNewRecipe() {
         return response;
     }
 }

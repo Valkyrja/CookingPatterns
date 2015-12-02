@@ -11,13 +11,11 @@ import java.util.List;
 public class OnIngredientListResponseEvent {
     private DataResponse<List<Ingredient>> response;
 
-    public OnIngredientListResponseEvent(DataResponse<List<Ingredient>> dataResponse)
-    {
+    public OnIngredientListResponseEvent(DataResponse<List<Ingredient>> dataResponse) {
         response = dataResponse;
     }
 
-    public DataResponse<List<Ingredient>> getIngredientList()
-    {
+    public DataResponse<List<Ingredient>> getIngredientList() {
         return response;
     }
 

@@ -11,6 +11,9 @@ import org.cookingpatterns.Model.Ingredient;
 public class EnglishSearchPaser implements ISearchQueryParser {
     @Override
     public ILiteralNode ParseString(String searchQuery) {
+
+
+
         //I want to cook 123 ,for 3, I have 1 2 3
 
         String[] parts = searchQuery.split(",");
