@@ -24,13 +24,23 @@
             android:paddingBottom="6dp"
             android:id="@+id/searchView"
             android:background="@android:drawable/dialog_holo_light_frame"
-            android:backgroundTint="#d8e8c6" />
+            android:backgroundTint="#d8e8c6"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:queryHint="Enter recipe search query" />
 
         <ListView
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/resultList">
+            android:id="@+id/resultList"
+            android:clickable="true"
+            android:fastScrollEnabled="false"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"
+            android:divider="#00ffffff"
+            android:dividerHeight="0dp">
 
         </ListView>
 

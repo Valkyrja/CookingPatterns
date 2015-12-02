@@ -94,12 +94,14 @@ public class SearchRecipeFragment extends Fragment
         ResultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("SearchRecipeFragment", "OnDisplayRecipeClick");
                 eventManager.fire(new OnDisplayRecipeClick((Recipe) parent.getItemAtPosition(position)));
             }
         });
         ResultList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("SearchRecipeFragment", "OnEditRecipeClick");
                 eventManager.fire(new OnEditRecipeClick((Recipe) parent.getItemAtPosition(position)));
                 return true;
             }
@@ -108,6 +110,7 @@ public class SearchRecipeFragment extends Fragment
         AddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("SearchRecipeFragment", "OnNewRecipeClick");
                 eventManager.fire(new OnNewRecipeClick());
             }
         });
@@ -115,6 +118,7 @@ public class SearchRecipeFragment extends Fragment
         SearchField.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("SearchRecipeFragment", "OnSearchRequestClick");
                 eventManager.fire(new OnSearchRequestClick(SearchField.getQuery()));
             }
         });

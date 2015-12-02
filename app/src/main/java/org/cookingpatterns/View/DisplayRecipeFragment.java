@@ -62,8 +62,11 @@ public class DisplayRecipeFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
-        if (getArguments() != null) {
+        if (savedInstanceState != null) {
             RecipeToBeDisplayed  = (Recipe)savedInstanceState.getSerializable("Recipe");
+        }
+        else if (getArguments() != null) {
+            RecipeToBeDisplayed  = (Recipe)getArguments().getSerializable("Recipe");
         }
     }
 
