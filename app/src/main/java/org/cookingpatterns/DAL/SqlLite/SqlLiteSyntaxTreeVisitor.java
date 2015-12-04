@@ -1,7 +1,6 @@
 package org.cookingpatterns.DAL.SqlLite;
 
 import org.cookingpatterns.Interfaces.ISyntaxTreeVisitor;
-import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Parsing.AndNode;
 import org.cookingpatterns.Parsing.CookNode;
 import org.cookingpatterns.Parsing.HaveNode;
@@ -104,12 +103,17 @@ public class SqlLiteSyntaxTreeVisitor implements ISyntaxTreeVisitor {
     @Override
     public void VisitIngredientNode(IngredientNode node) {
 
-        sql += "AND (i." + IngredientEntry.COLUMN_NAME.Name + "  <>  ? OR (i." +
-                IngredientEntry.COLUMN_NAME.Name + "  =  ? AND ri." +
-                RecipeIngredientEntry.COLUMN_AMOUNT.Name + " < ? )) ";
+        sql += "AND (i." + IngredientEntry.COLUMN_NAME.Name + "  <>  ? ";
+        sqlParameter.push(node.getIngredient().getName());
 
-        sqlParameter.push(node.getIngredient().getName());
-        sqlParameter.push(node.getIngredient().getName());
-        sqlParameter.push(Double.toString(node.getIngredient().getAmount()));
+        if (node.getIngredient().getAmount() != 0) {
+            sql += "OR (i." +
+                    IngredientEntry.COLUMN_NAME.Name + "  =  ? AND ri." +
+                    RecipeIngredientEntry.COLUMN_AMOUNT.Name + " < ? )) ";
+            sqlParameter.push(node.getIngredient().getName());
+            sqlParameter.push(Double.toString(node.getIngredient().getAmount()));
+        } else {
+            sql += ") ";
+        }
     }
 }
