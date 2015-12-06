@@ -28,26 +28,31 @@ public class DisplayIngredientsView extends LinearLayout {
         super(context);
         inflate(context, R.layout.displayingredientsview, this);
         RoboGuice.getInjector(getContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext()).injectViewMembers(this);
     }
 
     public DisplayIngredientsView(Context context, Ingredient ingr) {
         super(context);
         inflate(context, R.layout.displayingredientsview, this);
         RoboGuice.getInjector(getContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext()).injectViewMembers(this);
 
         ingredient = ingr;
+        onFinishInflate();
     }
 
     public DisplayIngredientsView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         inflate(context, R.layout.displayingredientsview, this);
         RoboGuice.getInjector(getContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext()).injectViewMembers(this);
     }
 
     public DisplayIngredientsView(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.displayingredientsview, this);
         RoboGuice.getInjector(getContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext()).injectViewMembers(this);
     }
 
     @Override

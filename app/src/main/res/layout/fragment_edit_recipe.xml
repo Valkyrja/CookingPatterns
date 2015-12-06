@@ -40,7 +40,8 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textStyle="bold|italic"
                     android:text=""
-                    android:id="@+id/recipename" />
+                    android:id="@+id/recipename"
+                    android:background="@drawable/border" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -96,7 +97,8 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text=""
                     android:id="@+id/category"
-                    android:layout_gravity="fill_horizontal" />
+                    android:layout_gravity="fill_horizontal"
+                    android:background="@drawable/border"/>
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -109,7 +111,8 @@
                     android:text=""
                     android:id="@+id/time"
                     android:layout_gravity="fill_horizontal"
-                    android:inputType="time" />
+                    android:inputType="time"
+                    android:background="@drawable/border"/>
 
                 <RatingBar
                     android:layout_width="wrap_content"
@@ -133,7 +136,8 @@
                     android:text=""
                     android:inputType="numberDecimal"
                     android:id="@+id/portion"
-                    android:layout_gravity="fill_horizontal" />
+                    android:layout_gravity="fill_horizontal"
+                    android:background="@drawable/border"/>
 
                 <ImageView
                     android:layout_width="125sp"
@@ -150,8 +154,8 @@
             </GridLayout>
 
             <View style="@style/Separator"
-                android:paddingTop="5sp"
-                android:paddingBottom="5sp"/>
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"/>
 
             <LinearLayout
                 android:orientation="vertical"
@@ -173,7 +177,7 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/listofingredients" >
+                    android:id="@+id/listofingredients">
 
                 </ListView>
 
@@ -209,13 +213,14 @@
                     android:textStyle="italic"
                     android:text="@string/preparation" />
 
-                <TextView
+                <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:minLines="5"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text=""
                     android:id="@+id/preparation"
-                    android:background="@drawable/border" />
+                    android:background="@drawable/border"/>
             </LinearLayout>
 
         </LinearLayout>

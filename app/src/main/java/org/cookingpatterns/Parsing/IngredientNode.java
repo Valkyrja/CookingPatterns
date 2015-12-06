@@ -8,7 +8,7 @@ import org.cookingpatterns.Model.Ingredient;
  */
 public class IngredientNode extends Node {
 
-    private Ingredient _ingredient;
+    public Ingredient _ingredient;
 
     public IngredientNode(Ingredient ingredient) {
         _ingredient = ingredient;

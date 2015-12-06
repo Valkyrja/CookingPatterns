@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -25,9 +27,14 @@ import org.cookingpatterns.EventMessages.OnProvideSearchResultEvent;
 import org.cookingpatterns.EventMessages.OnRecipeListResponseEvent;
 import org.cookingpatterns.EventMessages.OnSaveRecipeClick;
 import org.cookingpatterns.EventMessages.OnSearchRequestClick;
+import org.cookingpatterns.Loader.DataResponse;
+import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Model.Recipe;
+import org.cookingpatterns.Model.UnitOfMeasure;
 import org.cookingpatterns.R;
 import java.util.ArrayList;
+import java.util.List;
+
 import roboguice.RoboGuice;
 import roboguice.event.EventManager;
 import roboguice.event.Observes;
@@ -38,9 +45,10 @@ import roboguice.inject.InjectView;
 public class SearchRecipeFragment extends Fragment
 {
 
-    @InjectView(R.id.searchView) private SearchView SearchField;
-    @InjectView(R.id.resultList) private ListView ResultList;
-    @InjectView(R.id.fab)        private FloatingActionButton AddButton;
+    @InjectView(R.id.searchQuery)  private EditText SearchQuery;
+    @InjectView(R.id.searchButton) private ImageButton SearchButton;
+    @InjectView(R.id.resultList)   private ListView ResultList;
+    @InjectView(R.id.fab)          private FloatingActionButton AddButton;
 
     @Inject
     private EventManager eventManager;
@@ -78,18 +86,23 @@ public class SearchRecipeFragment extends Fragment
         super.onViewCreated(view, savedInstanceState);
         RoboGuice.getInjector(getActivity()).injectViewMembers(this);
 
-        ArrayList<Recipe> list = new ArrayList<Recipe>();
-        for (int i = 0; i < 10; i++)
-        {
-            Recipe res = new Recipe();
-            res.setName("Eierspeiß");
-            res.setRating(2);
-            res.setTime("00:10");
-            list.add(res);
-        }
-
-        RecipeAdapter = new RecipeListAdapter(getActivity().getApplication(), list);
+        RecipeAdapter = new RecipeListAdapter(getActivity().getApplication(), new ArrayList<Recipe>());
         ResultList.setAdapter(RecipeAdapter);
+
+        Recipe res = new Recipe();
+        res.setName("Eierspeiß");
+        res.setRating(2);
+        res.setTime("00:10");
+        res.setCategory("Fast&Furious");
+        List<Ingredient> ingr = new ArrayList<Ingredient>();
+        Ingredient in = new Ingredient();
+        in.setAmount(2);
+        in.setName("Eier");
+        in.setUnit(UnitOfMeasure.pcs);
+        ingr.add(in);
+        res.setIngredients(ingr);
+        res.setDescription("Für die Eierspeis die Eier in eine Schüssel schlagen und mit Salz sowie Pfeffer würzen. Mit einer Gabel verschlagen.In einer Pfanne geben.");
+        RecipeAdapter.add(res);
 
         ResultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -115,11 +128,11 @@ public class SearchRecipeFragment extends Fragment
             }
         });
 
-        SearchField.setOnSearchClickListener(new View.OnClickListener() {
+        SearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.i("SearchRecipeFragment", "OnSearchRequestClick");
-                eventManager.fire(new OnSearchRequestClick(SearchField.getQuery()));
+                eventManager.fire(new OnSearchRequestClick(SearchQuery.getText()));
             }
         });
     }
@@ -130,26 +143,44 @@ public class SearchRecipeFragment extends Fragment
         Log.i("SearchRecipeFragment", "onViewStateRestored");
         if(savedInstanceState != null)
         {
-            SearchField.setQuery(savedInstanceState.getString("Query"), false);
+            SearchQuery.setText(savedInstanceState.getString("Query"));
+            eventManager.fire(new OnSearchRequestClick(SearchQuery.getText()));
         }
     }
 
     public void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putString("Query", SearchField.getQuery().toString());
+        CharSequence query = SearchQuery.getText();
+        if(query != null && outState != null)
+            outState.putString("Query", query.toString());
 
         Log.i("SearchRecipeFragment", "onSaveInstanceState");
     }
 
-    private void OnProvideSearchResultEvent(@Observes OnProvideSearchResultEvent event) {
+   /* private void OnProvideSearchResultEvent(@Observes OnProvideSearchResultEvent event) {
         Log.i("SearchRecipeFragment", "OnDisplayRecipeClicked");
         RecipeAdapter.clear();
         RecipeAdapter.addAll(event.GetResult());
-    }
+    }*/
 
     private void onRecipeListLoadedEvent(@Observes OnRecipeListResponseEvent event)
     {
         Log.i("Loader", "OnRecipeListResponseEvent");
+        DataResponse<List<Recipe>> result = event.getRecipeList();
+        if(!result.hasError()) {
+            RecipeAdapter.clear();
+            RecipeAdapter.addAll(result.getResult());
+        }
+        else
+        {
+            Log.i("Loader", "OnRecipeListResponseEvent Failed");
+            getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(getActivity().getApplicationContext(), "Could not load recipe.",
+                            Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 }

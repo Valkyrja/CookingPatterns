@@ -22,13 +22,21 @@ import android.widget.RatingBar;
 import com.google.inject.Inject;
 
 import org.cookingpatterns.EventMessages.OnSaveRecipeClick;
+import org.cookingpatterns.Loader.DataLoader;
+import org.cookingpatterns.Loader.DataLoaderManager;
+import org.cookingpatterns.Loader.IDataCallback;
+import org.cookingpatterns.Loader.IngredientLoader;
+import org.cookingpatterns.Loader.RecipeLoader;
 import org.cookingpatterns.Model.ImageAsDrawable;
 import org.cookingpatterns.Model.ImageInfo;
 import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Model.Recipe;
 import org.cookingpatterns.R;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import roboguice.RoboGuice;
 import roboguice.event.EventManager;
@@ -57,29 +65,46 @@ public class EditRecipeFragment extends Fragment
     private EventManager eventManager;
 
     private Recipe RecipeToBeDisplayed;
-    private EditIngdientsListAdapter IngdientsAdapter;
+    private EditIngredientsListAdapter IngdientsAdapter;
+    private boolean CreateNewRecipe;
 
-    public static EditRecipeFragment CreateFragment(Recipe recipe)
+    public static EditRecipeFragment CreateFragment(Recipe recipe, boolean createNewRecipe)
     {
         EditRecipeFragment fragment = new EditRecipeFragment();
         Bundle args = new Bundle();
         args.putSerializable("Recipe", recipe);
+        args.putBoolean("CreateNewRecipe", createNewRecipe);
         fragment.setArguments(args);
         return fragment;
     }
 
     public EditRecipeFragment() {
         // Required empty public constructor
-        IngdientsAdapter = new EditIngdientsListAdapter(getActivity().getApplication(), new ArrayList<Ingredient>());
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
-        if (getArguments() != null) {
+        if (savedInstanceState != null) {
             RecipeToBeDisplayed  = (Recipe)savedInstanceState.getSerializable("Recipe");
+            CreateNewRecipe  = (boolean)savedInstanceState.getBoolean("CreateNewRecipe");
         }
+        else if (getArguments() != null) {
+            RecipeToBeDisplayed  = (Recipe)getArguments().getSerializable("Recipe");
+            CreateNewRecipe  = (boolean)getArguments().getBoolean("CreateNewRecipe");
+        }
+
+        IngdientsAdapter = new EditIngredientsListAdapter(getActivity().getApplication(), new ArrayList<Ingredient>());
+
+        DataLoader loader = new IngredientLoader(getActivity(), null); //TODO add search parameters
+        DataLoaderManager.init(getLoaderManager(), DataLoaderManager.INGREDIENT_LOADER_ID, loader, new IDataCallback() {
+            @Override
+            public void onFailure(Exception ex) { Log.i("EditRecipeFragment", "IngredientLoaderFailure"); }
+
+            @Override
+            public void onSuccess(Object result) { Log.i("EditRecipeFragment", "IngredientLoaderSuccess"); }
+        });
     }
 
     @Override
@@ -98,8 +123,9 @@ public class EditRecipeFragment extends Fragment
         SubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i("EditRecipeFragment","Save");
                 RecipeToBeDisplayed = ExtractDataFromView();
-                eventManager.fire(new OnSaveRecipeClick(RecipeToBeDisplayed));
+                eventManager.fire(new OnSaveRecipeClick(RecipeToBeDisplayed, CreateNewRecipe));
             }
         });
 
@@ -107,6 +133,7 @@ public class EditRecipeFragment extends Fragment
         Picture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                Log.i("EditRecipeFragment", "Image");
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -117,7 +144,8 @@ public class EditRecipeFragment extends Fragment
         AddIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                RecipeToBeDisplayed.addIngredient(new Ingredient());
+                Log.i("EditRecipeFragment", "AddIngredient");
+                IngdientsAdapter.add(new Ingredient());
                 IngdientsAdapter.notifyDataSetChanged();
             }
         });
@@ -130,14 +158,16 @@ public class EditRecipeFragment extends Fragment
             Name.setText(RecipeToBeDisplayed.getName());
             Categoty.setText(RecipeToBeDisplayed.getCategory());
             Time.setText(RecipeToBeDisplayed.getTime());
-            Rating.setRating(RecipeToBeDisplayed.getRating());
-            Portion.setText(RecipeToBeDisplayed.getPortions());
+            Rating.setRating(RecipeToBeDisplayed.getRatingNotNullable());
+            Portion.setText(RecipeToBeDisplayed.getPortionsAsString());
             Preparation.setText(RecipeToBeDisplayed.getDescription());
 
             ImageInfo image = RecipeToBeDisplayed.getImage();
-            Picture.setImageDrawable((Drawable) (image != null ? image.GetImage() : null));
-            Picture.setTag(RecipeToBeDisplayed.getImage().GetImagePath());
-            IngdientsAdapter.addAll(RecipeToBeDisplayed.getIngredients());
+            if(image != null) {
+                Picture.setImageDrawable((Drawable)image.GetImage());
+                Picture.setTag(image.GetImagePath());
+            }
+            IngdientsAdapter.setAll(RecipeToBeDisplayed.getIngredients());
         }
         Ingredients.setAdapter(IngdientsAdapter);
     }
@@ -166,10 +196,11 @@ public class EditRecipeFragment extends Fragment
     public void onViewStateRestored(@Nullable Bundle savedInstanceState)
     {
         super.onViewStateRestored(savedInstanceState);
-        Log.i("SearchRecipeFragment", "onViewStateRestored");
+        Log.i("EditRecipeFragment", "onViewStateRestored");
         if(savedInstanceState != null)
         {
             RecipeToBeDisplayed  = (Recipe)savedInstanceState.getSerializable("Recipe");
+            CreateNewRecipe  = (boolean)savedInstanceState.getBoolean("CreateNewRecipe");
         }
     }
 
@@ -179,17 +210,31 @@ public class EditRecipeFragment extends Fragment
 
         RecipeToBeDisplayed = ExtractDataFromView();
         outState.putSerializable("Recipe", RecipeToBeDisplayed);
+        outState.putBoolean("CreateNewRecipe", CreateNewRecipe);
 
-        Log.i("SearchRecipeFragment", "onSaveInstanceState");
+        Log.i("EditRecipeFragment", "onSaveInstanceState");
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i("EditRecipeFragment", "onActivityResult");
         if (resultCode == RESULT_OK) {
             if (requestCode == PICTURE_SELECTED) {
                 String path = getFullPath(data.getData());
+                try {
+
+                    InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
+                    Drawable yourDrawable = Drawable.createFromStream(inputStream, data.getData().toString());
+                    String some = data.getData().toString();
+                    Uri more = Uri.parse(some);
+                    int comp = more.compareTo(data.getData());
+                } catch (FileNotFoundException e) {
+
+                }
+
                 if(path != null) {
                     RecipeToBeDisplayed.setImage(new ImageAsDrawable(path));
-                    Picture.setImageDrawable((Drawable) RecipeToBeDisplayed.getImage().GetImage());
+                    Picture.setImageURI(data.getData());
+                    //Picture.setImageDrawable((Drawable) RecipeToBeDisplayed.getImage().GetImage());
                     Picture.setTag(RecipeToBeDisplayed.getImage().GetImagePath());
                 }
             }
@@ -207,7 +252,8 @@ public class EditRecipeFragment extends Fragment
         if( cursor != null ){
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             cursor.moveToFirst();
-            return cursor.getString(column_index);
+            String result = cursor.getString(column_index);
+            return result == null ? uri.getPath() : result;
         }
         return uri.getPath();
     }

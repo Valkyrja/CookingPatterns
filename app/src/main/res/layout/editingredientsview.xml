@@ -4,36 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:weightSum="1"
-    android:paddingLeft="25sp"
-    android:paddingRight="15sp"
-    android:paddingStart="25sp"
-    android:paddingEnd="15sp"
-    android:paddingTop="8sp"
-    android:paddingBottom="8sp">
+    android:paddingLeft="25dp"
+    android:paddingRight="15dp"
+    android:paddingStart="25dp"
+    android:paddingEnd="15dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
 
-    <RadioButton
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/decoration"
         android:checked="false"
         android:enabled="true"
-        android:clickable="false" />
+        android:clickable="false"
+        android:background="@android:drawable/ic_menu_compass" />
 
     <Space
-        android:layout_width="10sp"
-        android:layout_height="match_parent" />
+        android:layout_width="10dp"
+        android:layout_height="match_parent"/>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
+        <AutoCompleteTextView
+            android:id="@+id/name"
+            android:text=""
+            android:layout_width="wrap_content"
+            android:minWidth="80dp"
+            android:layout_height= "match_parent"
+            android:layout_gravity="fill_horizontal"
+            android:gravity="fill_horizontal"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="normal"
+            android:inputType="text"
+            android:background="@drawable/border"/>
+        <!--<FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
             <AutoCompleteTextView
                 android:id="@+id/name"
-                android:text="eggs"
+                android:text=""
                 android:layout_width="match_parent"
                 android:layout_height= "match_parent"
                 android:gravity="center_vertical|start"
@@ -48,7 +61,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal"
                 android:spinnerMode="dropdown"/>
-        </FrameLayout>
+        </FrameLayout>-->
         <!--<EditText
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
@@ -63,32 +76,32 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center_vertical|end"
             android:gravity="center_vertical|end">
 
             <EditText
                 android:layout_width="wrap_content"
+                android:minWidth="30dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="end"
                 android:text=""
                 android:id="@+id/amount"
-                android:gravity="center_vertical|end"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal"
-                android:inputType="number" />
+                android:inputType="number"
+                android:background="@drawable/border"/>
 
             <Space
-                android:layout_width="10sp"
+                android:layout_width="10dp"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:text=""
                 android:id="@+id/unit"
-                android:gravity="center_vertical|end"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                android:spinnerMode="dialog"
+                android:background="@drawable/border"/>
         </LinearLayout>
     </FrameLayout>
 

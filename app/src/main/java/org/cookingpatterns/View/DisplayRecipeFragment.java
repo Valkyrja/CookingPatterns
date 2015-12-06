@@ -102,8 +102,8 @@ public class DisplayRecipeFragment extends Fragment
             Name.setText(RecipeToBeDisplayed.getName());
             Categoty.setText(RecipeToBeDisplayed.getCategory());
             Time.setText(RecipeToBeDisplayed.getTime());
-            Rating.setRating(RecipeToBeDisplayed.getRating());
-            Portion.setText(RecipeToBeDisplayed.getPortions());
+            Rating.setRating(RecipeToBeDisplayed.getRatingNotNullable());
+            Portion.setText(RecipeToBeDisplayed.getPortionsAsString());
             Preparation.setText(RecipeToBeDisplayed.getDescription());
 
             ImageInfo image = RecipeToBeDisplayed.getImage();

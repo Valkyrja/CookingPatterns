@@ -7,7 +7,7 @@ import org.cookingpatterns.Interfaces.ISyntaxTreeVisitor;
  */
 public class TextNode extends Node {
 
-    private String _test;
+    public String _test;
 
     public TextNode(String text) {
         _test = text;

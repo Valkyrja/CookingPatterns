@@ -24,6 +24,10 @@ import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Model.Recipe;
 import org.cookingpatterns.Model.UnitOfMeasure;
 import org.cookingpatterns.R;
+import org.cookingpatterns.UtilsAndExtentions.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import roboguice.RoboGuice;
 import roboguice.inject.InjectView;
@@ -34,66 +38,92 @@ import roboguice.inject.InjectView;
 public class EditIngredientsView extends LinearLayout
 {
     private Ingredient ingredient;
+    private List<Ingredient> existingSelection;
 
     @InjectView(R.id.amount)        private EditText AmountView;
-    @InjectView(R.id.unit)          private TextView UnitView;
+    @InjectView(R.id.unit)          private Spinner UnitView;
     @InjectView(R.id.name)          private AutoCompleteTextView NameView;
-    @InjectView(R.id.nameSpinner)   private Spinner DropdownNameView;
+    //InjectView(R.id.nameSpinner)   private Spinner DropdownNameView;
 
     public EditIngredientsView(Context context) {
         super(context);
         inflate(context, R.layout.editingredientsview, this);
         RoboGuice.getInjector(getContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext()).injectViewMembers(this);
+
+        existingSelection = new ArrayList<Ingredient>();
     }
 
-    public EditIngredientsView(Context context, Ingredient ingr) {
+    public EditIngredientsView(Context context, Ingredient ingr, List<Ingredient> selectionList) {
         super(context);
         inflate(context, R.layout.editingredientsview, this);
         RoboGuice.getInjector(getContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext()).injectViewMembers(this);
 
         ingredient = ingr;
+        existingSelection = selectionList;
+        onFinishInflate();
     }
 
     public EditIngredientsView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         inflate(context, R.layout.editingredientsview, this);
         RoboGuice.getInjector(getContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext()).injectViewMembers(this);
     }
 
     public EditIngredientsView(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.editingredientsview, this);
         RoboGuice.getInjector(getContext()).injectMembers(this);
+        RoboGuice.getInjector(getContext()).injectViewMembers(this);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        if(ingredient != null) {
-            AmountView.setText(String.format("%.2f", ingredient.getAmount()));
-            UnitView.setText(String.format("%s", ingredient.getUnit()));
-            NameView.setText(ingredient.getName());
-        }
-
-        String[] list = new String[] { "some 1", "some 2", "some 3" };
-        //set auto complete
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, list);
-        NameView.setAdapter(adapter);
-        //set spinner
-        DropdownNameView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        ArrayAdapter<String> unitAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, Utils.getNames(UnitOfMeasure.class));
+        UnitView.setAdapter(unitAdapter);
+        UnitView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                NameView.setText(DropdownNameView.getSelectedItem().toString());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //set auto complete
+        ArrayAdapter<Ingredient> adapter = new ArrayAdapter<Ingredient>(getContext(), android.R.layout.simple_dropdown_item_1line, existingSelection);
+        NameView.setAdapter(adapter);
+        //set spinner
+        /*DropdownNameView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Ingredient selected = (Ingredient)DropdownNameView.getSelectedItem();
+                UnitView.setSelection(selected.getUnit().ordinal());
+                NameView.setText(selected.getName());
                 NameView.dismissDropDown();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                NameView.setText(DropdownNameView.getSelectedItem().toString());
+                Ingredient selected = (Ingredient)DropdownNameView.getSelectedItem();
+                UnitView.setSelection(selected.getUnit().ordinal());
+                NameView.setText(selected.getName());
                 NameView.dismissDropDown();
             }
-        });
+        });*/
+
+        if (ingredient != null) {
+            AmountView.setText(String.format("%.2f", ingredient.getAmount()));
+            UnitView.setSelection(ingredient.getUnit().ordinal());
+            NameView.setText(ingredient.getName());
+        }
     }
 
     public Ingredient ExtractDataFromView()
@@ -102,9 +132,9 @@ public class EditIngredientsView extends LinearLayout
         {
             ingredient = new Ingredient();
         }
-        ingredient.setName(NameView.getText().toString());
-        ingredient.setAmount(Double.parseDouble(AmountView.getText().toString()));
-        ingredient.setUnit(UnitOfMeasure.valueOf(UnitView.getText().toString()));
+        ingredient.setName(NameView.getText() != null ? NameView.getText().toString() : "");
+        ingredient.setAmount(Double.parseDouble(AmountView.getText() != null && AmountView.getText().toString() != "" ? AmountView.getText().toString() : "0"));
+        ingredient.setUnit(UnitOfMeasure.valueOf((String) UnitView.getSelectedItem()));
 
         return ingredient;
     }

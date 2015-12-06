@@ -1,5 +1,7 @@
 package org.cookingpatterns.Interfaces;
 
-public interface ILiteralNode {
+import java.io.Serializable;
+
+public interface ILiteralNode extends Serializable {
     void acceptVisitor(ISyntaxTreeVisitor visitor);
 }

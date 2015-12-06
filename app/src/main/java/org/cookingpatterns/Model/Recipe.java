@@ -1,6 +1,7 @@
 package org.cookingpatterns.Model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.UnknownFormatConversionException;
@@ -25,11 +26,22 @@ public class Recipe implements Serializable
 
     //TODO add all other things
 
-    public Recipe() { Id = UUID.randomUUID(); }
+    public Recipe()
+    {
+        this(UUID.randomUUID());
+    }
 
     public Recipe(UUID id)
+
     {
         Id = id;
+        Name = "";
+        Category = "";
+        Portions = 0;
+        Time = "00:00";
+        Rating = 0;
+        ingredients = new ArrayList<Ingredient>();
+        Description = "";
     }
 
     /*public Recipe(UUID id, String name, String category, Integer portions, String time, Integer rating)
@@ -65,6 +77,7 @@ public class Recipe implements Serializable
     public void setCategory(String category) { Category = category; }
 
     public Integer getPortions() { return Portions; }
+    public String getPortionsAsString() { return Portions == null ? "0" : Portions.toString(); }
     public void setPortions(Integer portions) { Portions = portions; }
 
     public String getTime() { return Time; }
@@ -80,6 +93,7 @@ public class Recipe implements Serializable
     public Integer getRating() {
         return Rating;
     }
+    public int getRatingNotNullable() { return Rating == null ? 0 : Rating; }
     public void setRating(Integer rating) {
         Rating = rating;
     }

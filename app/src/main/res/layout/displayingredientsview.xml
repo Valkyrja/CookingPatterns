@@ -11,17 +11,18 @@
     android:paddingTop="1sp"
     android:paddingBottom="1sp">
 
-    <RadioButton
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/decoration"
         android:checked="false"
         android:enabled="true"
-        android:clickable="false" />
+        android:clickable="false"
+        android:background="@android:drawable/ic_menu_compass" />
 
     <Space
         android:layout_width="10sp"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -30,11 +31,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="eggs"
+            android:text=""
             android:id="@+id/name"
             android:gravity="center_vertical|start"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textStyle="normal"/>
+            android:textStyle="normal"
+            android:textColor="@color/wallet_dim_foreground_inverse_holo_dark"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -50,7 +52,8 @@
                 android:id="@+id/amount"
                 android:gravity="center_vertical|end"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                android:textColor="@color/wallet_dim_foreground_inverse_holo_dark"/>
 
             <Space
                 android:layout_width="10sp"
@@ -64,7 +67,8 @@
                 android:id="@+id/unit"
                 android:gravity="center_vertical|end"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="normal" />
+                android:textStyle="normal"
+                android:textColor="@color/wallet_dim_foreground_inverse_holo_dark"/>
         </LinearLayout>
     </FrameLayout>
 

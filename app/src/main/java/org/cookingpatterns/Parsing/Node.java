@@ -13,6 +13,11 @@ public abstract class Node implements ILiteralNode, Iterable<Node> {
     public LinkedList<Node> childes;
     public Node parent;
 
+    public Node()
+    {
+        childes = new LinkedList<Node>();
+    }
+
     public boolean hasChildren() {
         if (childes != null && !childes.isEmpty()) {
             return true;

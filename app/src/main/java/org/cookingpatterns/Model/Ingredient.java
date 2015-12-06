@@ -15,12 +15,15 @@ public class Ingredient implements Serializable
 
     public Ingredient()
     {
-        Id = UUID.randomUUID();
+        this(UUID.randomUUID());
     }
 
     public Ingredient(UUID id)
     {
         Id = id;
+        Name = "";
+        Amount = 0;
+        Unit = UnitOfMeasure.pcs;
     }
 
     public String getName() {
@@ -46,5 +49,9 @@ public class Ingredient implements Serializable
         return Id;
     }
 
+    @Override
+    public String toString() {
+        return getName();
+    }
     //TODO add more
 }

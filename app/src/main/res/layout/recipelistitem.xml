@@ -14,7 +14,7 @@
         android:layout_height="80dp"
         android:id="@+id/picture"
         android:adjustViewBounds="false"
-        android:background="@android:drawable/ic_menu_help"
+        android:background="@android:drawable/ic_menu_gallery"
         android:foreground="@drawable/border"/>
 
     <Space
@@ -32,6 +32,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text=""
             android:textStyle="bold"
+            android:textColor="@color/wallet_dim_foreground_inverse_holo_dark"
             android:id="@+id/name" />
 
         <LinearLayout
@@ -47,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text=""
+                android:textColor="@color/wallet_dim_foreground_inverse_holo_dark"
                 android:id="@+id/duration" />
 
             <RatingBar
