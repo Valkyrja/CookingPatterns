@@ -175,15 +175,8 @@ public class SqlLiteDataProvider implements IDataProvider {
             //values.put("", recipe.getImage().GetImag) //TODO image
             writableDatabase.insertOrThrow(RecipeEntry.TABLE_NAME, null, values);
 
+            addRecipeIngredients(recipe, writableDatabase);
 
-            for (Ingredient ingredient : recipe.getIngredients()) {
-                values.clear();
-                values.put(RecipeIngredientEntry.COLUMN_RECIPEID.Name, recipe.getId().toString());
-                values.put(RecipeIngredientEntry.COLUMN_INGREDIENTID.Name, ingredient.getId().toString());
-                values.put(RecipeIngredientEntry.COLUMN_AMOUNT.Name, ingredient.getAmount());
-
-                writableDatabase.insertOrThrow(RecipeIngredientEntry.TABLE_NAME, null, values);
-            }
             writableDatabase.setTransactionSuccessful();
         } finally {
             writableDatabase.endTransaction();
@@ -218,25 +211,36 @@ public class SqlLiteDataProvider implements IDataProvider {
 
             statement.executeUpdateDelete();
 
-            sql = "DELETE FROM "+ RecipeIngredientEntry.TABLE_NAME + " WHERE " +
+            sql = "DELETE FROM " + RecipeIngredientEntry.TABLE_NAME + " WHERE " +
                     RecipeIngredientEntry.COLUMN_RECIPEID.Name + " = ?";
             statement = writableDatabase.compileStatement(sql);
             statement.bindString(1, recipe.getId().toString());
             statement.executeUpdateDelete();
 
-            ContentValues values = new ContentValues();
-            for (Ingredient ingredient : recipe.getIngredients()) {
-                values.clear();
-                values.put(RecipeIngredientEntry.COLUMN_RECIPEID.Name, recipe.getId().toString());
-                values.put(RecipeIngredientEntry.COLUMN_INGREDIENTID.Name, ingredient.getId().toString());
-                values.put(RecipeIngredientEntry.COLUMN_AMOUNT.Name, ingredient.getAmount());
-
-                writableDatabase.insertOrThrow(RecipeIngredientEntry.TABLE_NAME, null, values);
-            }
+            addRecipeIngredients(recipe, writableDatabase);
 
             writableDatabase.setTransactionSuccessful();
         } finally {
             writableDatabase.endTransaction();
+        }
+
+    }
+
+    private void addRecipeIngredients(Recipe recipe, SQLiteDatabase writableDatabase) {
+
+        ContentValues values = new ContentValues();
+        for (Ingredient ingredient : recipe.getIngredients()) {
+            values.clear();
+            values.put(IngredientEntry.COLUMN_ID.Name, ingredient.getId().toString());
+            values.put(IngredientEntry.COLUMN_NAME.Name, ingredient.getName());
+            values.put(IngredientEntry.COLUMN_UNIT.Name, ingredient.getUnit().ordinal());
+            writableDatabase.insertWithOnConflict(IngredientEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_IGNORE);
+
+            values.clear();
+            values.put(RecipeIngredientEntry.COLUMN_RECIPEID.Name, recipe.getId().toString());
+            values.put(RecipeIngredientEntry.COLUMN_INGREDIENTID.Name, ingredient.getId().toString());
+            values.put(RecipeIngredientEntry.COLUMN_AMOUNT.Name, ingredient.getAmount());
+            writableDatabase.insertOrThrow(RecipeIngredientEntry.TABLE_NAME, null, values);
         }
 
     }
