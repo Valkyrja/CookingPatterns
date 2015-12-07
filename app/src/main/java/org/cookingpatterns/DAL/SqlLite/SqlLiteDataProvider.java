@@ -218,6 +218,22 @@ public class SqlLiteDataProvider implements IDataProvider {
 
             statement.executeUpdateDelete();
 
+            sql = "DELETE FROM "+ RecipeIngredientEntry.TABLE_NAME + " WHERE " +
+                    RecipeIngredientEntry.COLUMN_RECIPEID.Name + " = ?";
+            statement = writableDatabase.compileStatement(sql);
+            statement.bindString(1, recipe.getId().toString());
+            statement.executeUpdateDelete();
+
+            ContentValues values = new ContentValues();
+            for (Ingredient ingredient : recipe.getIngredients()) {
+                values.clear();
+                values.put(RecipeIngredientEntry.COLUMN_RECIPEID.Name, recipe.getId().toString());
+                values.put(RecipeIngredientEntry.COLUMN_INGREDIENTID.Name, ingredient.getId().toString());
+                values.put(RecipeIngredientEntry.COLUMN_AMOUNT.Name, ingredient.getAmount());
+
+                writableDatabase.insertOrThrow(RecipeIngredientEntry.TABLE_NAME, null, values);
+            }
+
             writableDatabase.setTransactionSuccessful();
         } finally {
             writableDatabase.endTransaction();
