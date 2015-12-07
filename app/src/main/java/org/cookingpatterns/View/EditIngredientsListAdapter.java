@@ -33,13 +33,6 @@ public class EditIngredientsListAdapter extends ArrayAdapter<Ingredient>
         existingSelection = new ArrayList<Ingredient>();
     }
 
-    private void OnIngredientListResponse(@Observes OnIngredientListResponseEvent event) {
-        Log.i("EditIngrListAdapter", "OnIngredientListResponse");
-        DataResponse<List<Ingredient>> result = event.getIngredientList();
-        if(!result.hasError())
-            existingSelection = result.getResult();
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
@@ -47,7 +40,6 @@ public class EditIngredientsListAdapter extends ArrayAdapter<Ingredient>
         EditIngredientsView ingrView = new EditIngredientsView(getContext(), item, existingSelection);
         ingrView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));
-        //parent.addView(ingrView);
         views.add(ingrView);
 
         return ingrView;
@@ -66,6 +58,10 @@ public class EditIngredientsListAdapter extends ArrayAdapter<Ingredient>
     public void setAll(Ingredient ... items) {
         super.clear();
         super.addAll(items);
+    }
+
+    public void propagateSelectFromList(List<Ingredient> collection) {
+        existingSelection = collection;
     }
 
     public List<Ingredient> ExtractIngredients()

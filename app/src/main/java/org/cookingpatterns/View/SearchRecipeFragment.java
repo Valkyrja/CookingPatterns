@@ -158,29 +158,9 @@ public class SearchRecipeFragment extends Fragment
         Log.i("SearchRecipeFragment", "onSaveInstanceState");
     }
 
-   /* private void OnProvideSearchResultEvent(@Observes OnProvideSearchResultEvent event) {
+    private void HandleProvideSearchResultEvent(@Observes OnProvideSearchResultEvent event) {
         Log.i("SearchRecipeFragment", "OnDisplayRecipeClicked");
         RecipeAdapter.clear();
         RecipeAdapter.addAll(event.GetResult());
-    }*/
-
-    private void onRecipeListLoadedEvent(@Observes OnRecipeListResponseEvent event)
-    {
-        Log.i("Loader", "OnRecipeListResponseEvent");
-        DataResponse<List<Recipe>> result = event.getRecipeList();
-        if(!result.hasError()) {
-            RecipeAdapter.clear();
-            RecipeAdapter.addAll(result.getResult());
-        }
-        else
-        {
-            Log.i("Loader", "OnRecipeListResponseEvent Failed");
-            getActivity().runOnUiThread(new Runnable() {
-                public void run() {
-                    Toast.makeText(getActivity().getApplicationContext(), "Could not load recipe.",
-                            Toast.LENGTH_LONG).show();
-                }
-            });
-        }
     }
 }

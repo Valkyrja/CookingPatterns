@@ -1,12 +1,10 @@
 package org.cookingpatterns.View;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
@@ -21,25 +19,22 @@ import android.widget.RatingBar;
 
 import com.google.inject.Inject;
 
+import org.cookingpatterns.EventMessages.OnIngredientListResponseEvent;
+import org.cookingpatterns.EventMessages.OnProvideAllIngredientsEvent;
+import org.cookingpatterns.EventMessages.OnRequestAllIngredientsEvent;
 import org.cookingpatterns.EventMessages.OnSaveRecipeClick;
-import org.cookingpatterns.Loader.DataLoader;
-import org.cookingpatterns.Loader.DataLoaderManager;
-import org.cookingpatterns.Loader.IDataCallback;
-import org.cookingpatterns.Loader.IngredientLoader;
-import org.cookingpatterns.Loader.RecipeLoader;
-import org.cookingpatterns.Model.ImageAsDrawable;
+import org.cookingpatterns.Loader.DataResponse;
+import org.cookingpatterns.Model.ImageAsUri;
 import org.cookingpatterns.Model.ImageInfo;
 import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Model.Recipe;
 import org.cookingpatterns.R;
-
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import roboguice.RoboGuice;
 import roboguice.event.EventManager;
+import roboguice.event.Observes;
 import roboguice.inject.InjectView;
 
 
@@ -95,16 +90,8 @@ public class EditRecipeFragment extends Fragment
             CreateNewRecipe  = (boolean)getArguments().getBoolean("CreateNewRecipe");
         }
 
+        eventManager.fire(new OnRequestAllIngredientsEvent());
         IngdientsAdapter = new EditIngredientsListAdapter(getActivity().getApplication(), new ArrayList<Ingredient>());
-
-        DataLoader loader = new IngredientLoader(getActivity(), null); //TODO add search parameters
-        DataLoaderManager.init(getLoaderManager(), DataLoaderManager.INGREDIENT_LOADER_ID, loader, new IDataCallback() {
-            @Override
-            public void onFailure(Exception ex) { Log.i("EditRecipeFragment", "IngredientLoaderFailure"); }
-
-            @Override
-            public void onSuccess(Object result) { Log.i("EditRecipeFragment", "IngredientLoaderSuccess"); }
-        });
     }
 
     @Override
@@ -187,7 +174,7 @@ public class EditRecipeFragment extends Fragment
         RecipeToBeDisplayed.setRating((int) Rating.getRating());
         RecipeToBeDisplayed.setPortions(Integer.getInteger(Portion.getText().toString()));
 
-        RecipeToBeDisplayed.setImage(new ImageAsDrawable((String) Picture.getTag()));
+        RecipeToBeDisplayed.setImage(new ImageAsUri((String) Picture.getTag()));
         RecipeToBeDisplayed.setIngredients(IngdientsAdapter.ExtractIngredients());
 
         return RecipeToBeDisplayed;
@@ -219,42 +206,20 @@ public class EditRecipeFragment extends Fragment
         Log.i("EditRecipeFragment", "onActivityResult");
         if (resultCode == RESULT_OK) {
             if (requestCode == PICTURE_SELECTED) {
-                String path = getFullPath(data.getData());
                 try {
-
-                    InputStream inputStream = getActivity().getContentResolver().openInputStream(data.getData());
-                    Drawable yourDrawable = Drawable.createFromStream(inputStream, data.getData().toString());
-                    String some = data.getData().toString();
-                    Uri more = Uri.parse(some);
-                    int comp = more.compareTo(data.getData());
-                } catch (FileNotFoundException e) {
-
-                }
-
-                if(path != null) {
-                    RecipeToBeDisplayed.setImage(new ImageAsDrawable(path));
-                    Picture.setImageURI(data.getData());
-                    //Picture.setImageDrawable((Drawable) RecipeToBeDisplayed.getImage().GetImage());
+                    String path = data.getData().toString();
+                    RecipeToBeDisplayed.setImage(new ImageAsUri(path));
+                    Picture.setImageURI((Uri)RecipeToBeDisplayed.getImage().GetImage());
                     Picture.setTag(RecipeToBeDisplayed.getImage().GetImagePath());
+                } catch (Exception e) {
+
                 }
             }
         }
     }
 
-    public String getFullPath(Uri uri)
-    {
-        if( uri == null ) {
-            return null;
-        }
-
-        String[] projection = { MediaStore.Images.Media.DATA };
-        Cursor cursor = getActivity().getContentResolver().query(uri, projection, null, null, null);
-        if( cursor != null ){
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            String result = cursor.getString(column_index);
-            return result == null ? uri.getPath() : result;
-        }
-        return uri.getPath();
+    private void HandleProvideAllIngredientsEvent(@Observes OnProvideAllIngredientsEvent event) {
+        Log.i("EditRecipeFragment", "OnProvideAllIngredientsEvent");
+        IngdientsAdapter.propagateSelectFromList(event.GetResult());
     }
 }

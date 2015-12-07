@@ -5,13 +5,18 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
+import org.cookingpatterns.DAL.DataProviderManager;
 import org.cookingpatterns.EventMessages.OnDisplayRecipeClick;
 import org.cookingpatterns.EventMessages.OnEditRecipeClick;
+import org.cookingpatterns.EventMessages.OnIngredientListResponseEvent;
 import org.cookingpatterns.EventMessages.OnNewRecipeClick;
+import org.cookingpatterns.EventMessages.OnProvideAllIngredientsEvent;
 import org.cookingpatterns.EventMessages.OnProvideSearchResultEvent;
 import org.cookingpatterns.EventMessages.OnRecalculatePortionsClick;
 import org.cookingpatterns.EventMessages.OnRecipeListResponseEvent;
+import org.cookingpatterns.EventMessages.OnRequestAllIngredientsEvent;
 import org.cookingpatterns.EventMessages.OnSaveRecipeClick;
 import org.cookingpatterns.EventMessages.OnSearchRequestClick;
 import org.cookingpatterns.Interfaces.ILiteralNode;
@@ -22,6 +27,7 @@ import org.cookingpatterns.Loader.DataLoader;
 import org.cookingpatterns.Loader.DataLoaderManager;
 import org.cookingpatterns.Loader.DataResponse;
 import org.cookingpatterns.Loader.IDataCallback;
+import org.cookingpatterns.Loader.IngredientLoader;
 import org.cookingpatterns.Loader.RecipeLoader;
 import org.cookingpatterns.Loader.UpdateRecipeLoader;
 import org.cookingpatterns.Model.Ingredient;
@@ -103,13 +109,13 @@ public class Controler extends RoboActivity
         Log.i("Controler", "onSaveInstanceState");
     }
 
-    private void OnNewRecipeClicked(@Observes OnNewRecipeClick event) {
+    private void HandleNewRecipeClicked(@Observes OnNewRecipeClick event) {
         Log.i("Controler", "OnNewRecipeClicked");
         Fragment fragment = EditRecipeFragment.CreateFragment(new Recipe(), true);
         switchFragment(fragment);
     }
 
-    private void OnSaveRecipeClicked(@Observes OnSaveRecipeClick event) {
+    private void HandleSaveRecipeClicked(@Observes OnSaveRecipeClick event) {
         Log.i("Controler", "OnSaveRecipeClicked");
         getFragmentManager().popBackStack();
 
@@ -127,19 +133,19 @@ public class Controler extends RoboActivity
         }
     }
 
-    private void OnEditRecipeClicked(@Observes OnEditRecipeClick event) {
-        Log.i("Controler","OnEditRecipeClicked");
+    private void HandleEditRecipeClicked(@Observes OnEditRecipeClick event) {
+        Log.i("Controler", "OnEditRecipeClicked");
         Fragment fragment = EditRecipeFragment.CreateFragment(event.getRecipe(), false);
         switchFragment(fragment);
     }
 
-    private void OnDisplayRecipeClicked(@Observes OnDisplayRecipeClick event) {
+    private void HandleDisplayRecipeClicked(@Observes OnDisplayRecipeClick event) {
         Log.i("Controler","OnDisplayRecipeClicked");
         Fragment fragment = DisplayRecipeFragment.CreateFragment(event.getRecipe());
         switchFragment(fragment);
     }
 
-    private void OnSearchRequestClicked(@Observes OnSearchRequestClick event) {
+    private void HandleSearchRequestClicked(@Observes OnSearchRequestClick event) {
         Log.i("Controler", "OnSearchRequestClicked");
 
         ILiteralNode root = parser.ParseString(event.GetQuery());
@@ -150,7 +156,50 @@ public class Controler extends RoboActivity
         DataLoaderManager.init(getLoaderManager(), DataLoaderManager.RECIPE_LOADER_ID, loader, new OmittedDataCallback("Controler SearchRequest"));
     }
 
-    private void OnRecalculatePortionsClicked(@Observes OnRecalculatePortionsClick event) {
+    private void HandleRequestAllIngredientsEvent(@Observes OnRequestAllIngredientsEvent event) {
+        Log.i("Controler", "OnRequestAllIngredientsEvent");
+
+        DataLoader loader = new IngredientLoader(this, null);
+        DataLoaderManager.init(getLoaderManager(), DataLoaderManager.INGREDIENT_LOADER_ID, loader, new OmittedDataCallback("Controler Request All Ingredients"));
+    }
+
+    private void HandleIngredientListResponseEvent(@Observes OnIngredientListResponseEvent event)
+    {
+        Log.i("Loader", "OnIngredientListResponseEvent");
+        DataResponse<List<Ingredient>> result = event.getIngredientList();
+        if(!result.hasError()) {
+            eventManager.fire(new OnProvideAllIngredientsEvent(result.getResult()));
+        }
+        else
+        {
+            Log.i("Loader", "OnIngredientListResponseEvent Failed");
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "Could not load list of ingredients.", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
+    private void HandleRecipeListLoadedEvent(@Observes OnRecipeListResponseEvent event)
+    {
+        Log.i("Loader", "OnRecipeListResponseEvent");
+        DataResponse<List<Recipe>> result = event.getRecipeList();
+        if(!result.hasError()) {
+            eventManager.fire(new OnProvideSearchResultEvent(result.getResult()));
+        }
+        else
+        {
+            Log.i("Loader", "OnRecipeListResponseEvent Failed");
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "Could not load recipe.", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
+    private void HandleRecalculatePortionsClicked(@Observes OnRecalculatePortionsClick event) {
         Log.i("Controler","OnUpdateRecipeDataEvent");
         // start Intent for the corresponding gauge
     }
