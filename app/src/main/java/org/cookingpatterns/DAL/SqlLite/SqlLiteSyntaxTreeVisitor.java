@@ -50,15 +50,19 @@ public class SqlLiteSyntaxTreeVisitor implements ISyntaxTreeVisitor {
                 break;
         }
 
+        if (newState < 99 && state >= 1) {
+            sql += "AND ";
+        }
+
         state = newState;
     }
 
     @Override
     public void VisitRootNode(RootNode node) {
 
-        for (int i = 0; i < node.childes.size() - 1; i++) {
-            _operatorStack.push("AND ");
-        }
+        //  for (int i = 0; i < node.childes.size() - 1; i++) {
+        //       _operatorStack.push("AND ");
+        //    }
     }
 
     @Override
