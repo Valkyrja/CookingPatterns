@@ -21,7 +21,7 @@
             android:columnCount="2"
             android:rowCount="1"
             android:background="@android:drawable/dialog_holo_light_frame"
-            android:backgroundTint="#d8e8c6"
+            android:backgroundTint="@color/colorGrayPages"
             android:paddingLeft="6dp"
             android:paddingRight="6dp"
             android:paddingTop="6dp"
@@ -45,8 +45,7 @@
                 android:layout_column="1"
                 android:layout_row="0"
                 android:id="@+id/searchButton"
-                android:background="@android:drawable/ic_search_category_default"
-                android:backgroundTint="@android:color/secondary_text_dark"/>
+                android:background="@android:drawable/ic_search_category_default" />
         </GridLayout>
 
         <ListView
@@ -71,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@android:drawable/ic_input_add"
+        android:src="@android:drawable/ic_input_get"
         app:backgroundTint="@color/colorAccent" />
 
 </FrameLayout>

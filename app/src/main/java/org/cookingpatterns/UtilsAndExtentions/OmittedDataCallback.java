@@ -13,9 +13,7 @@ public class OmittedDataCallback implements IDataCallback
     }
 
     @Override
-    public void onFailure(Exception ex) {
-        Log.i(name, "Failure");
-    }
+    public void onFailure(Exception ex) { Log.e(name, "Failure", ex); }
 
     @Override
     public void onSuccess(Object result) {

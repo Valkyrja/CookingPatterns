@@ -10,7 +10,11 @@ public class ImageAsUri extends ImageInfo
     }
 
     public Object GetImage() {
-        return Uri.parse(imagePath);
+        try {
+            return Uri.parse(imagePath);
+        }
+        catch (Exception ex) { }
+        return null;
     }
 
 }

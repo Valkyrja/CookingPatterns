@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -136,6 +137,15 @@ public class EditRecipeFragment extends Fragment
                 IngdientsAdapter.notifyDataSetChanged();
             }
         });
+
+        Ingredients.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("EditRecipeFragment", "OnDeleteIngredient");
+                IngdientsAdapter.remove(IngdientsAdapter.getItem(position));
+                return true;
+            }
+        });
     }
 
     private void UpdateDataInView()
@@ -151,7 +161,7 @@ public class EditRecipeFragment extends Fragment
 
             ImageInfo image = RecipeToBeDisplayed.getImage();
             if(image != null) {
-                Picture.setImageDrawable((Drawable)image.GetImage());
+                Picture.setImageURI((Uri) image.GetImage());
                 Picture.setTag(image.GetImagePath());
             }
             IngdientsAdapter.setAll(RecipeToBeDisplayed.getIngredients());

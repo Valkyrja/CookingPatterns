@@ -45,10 +45,8 @@
         <item name="android:maxHeight">30dip</item>
     </style>
 
-    <style name="editText" parent="@android:style/Widget.Holo.Light.EditText">
-        <item name="android:background">@android:drawable/editbox_background_normal</item>
-        <item name="android:textCursorDrawable">@color/common_action_bar_splitter</item>
-        <item name="android:height">40sp</item>
+    <style name="editText" parent="@android:style/Widget.EditText">
+        <item name="android:textCursorDrawable">@drawable/blackpipe</item>
     </style>
 
 </resources>

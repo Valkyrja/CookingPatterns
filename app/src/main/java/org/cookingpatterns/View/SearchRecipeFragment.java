@@ -151,7 +151,7 @@ public class SearchRecipeFragment extends Fragment
     public void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        CharSequence query = SearchQuery.getText();
+        CharSequence query = SearchQuery != null ? SearchQuery.getText() : null;
         if(query != null && outState != null)
             outState.putString("Query", query.toString());
 

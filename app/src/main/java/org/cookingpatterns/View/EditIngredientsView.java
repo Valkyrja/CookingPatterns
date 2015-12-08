@@ -10,12 +10,17 @@ import android.text.Editable;
 import android.text.TextPaint;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import org.cookingpatterns.Model.Ingredient;
@@ -37,9 +42,11 @@ public class EditIngredientsView extends LinearLayout
     private Ingredient ingredient;
     private List<Ingredient> existingSelection;
 
-    @InjectView(R.id.amount)        private EditText AmountView;
-    @InjectView(R.id.unit)          private Spinner UnitView;
-    @InjectView(R.id.name)          private AutoCompleteTextView NameView;
+    @InjectView(R.id.amount)            private EditText AmountView;
+    @InjectView(R.id.unit)              private Spinner UnitView;
+    @InjectView(R.id.name)              private AutoCompleteTextView NameView;
+    @InjectView(R.id.sizeLayout)        private LinearLayout SizeProvider;
+
     //InjectView(R.id.nameSpinner)   private Spinner DropdownNameView;
 
     public EditIngredientsView(Context context) {
@@ -83,14 +90,6 @@ public class EditIngredientsView extends LinearLayout
         ArrayAdapter<String> unitAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, Utils.getNames(UnitOfMeasure.class));
         UnitView.setAdapter(unitAdapter);
 
-        if(existingSelection.isEmpty())
-        {
-            Ingredient ingr = new Ingredient();
-            ingr.setUnit(UnitOfMeasure.pcs);
-            ingr.setName("Eggs");
-            existingSelection.add(ingr);
-        }
-
         //set auto complete
         ArrayAdapter<Ingredient> adapter = new ArrayAdapter<Ingredient>(getContext(), android.R.layout.simple_dropdown_item_1line, existingSelection);
         NameView.setAdapter(adapter);
@@ -103,13 +102,16 @@ public class EditIngredientsView extends LinearLayout
 
             @Override
             public void afterTextChanged(Editable s) {
-                String name = s != null ? s.toString() : "";
-                Ingredient ingr = getExistingIngredientByName(name);
-                boolean isknownIngredient = (ingr != null);
-                UnitView.setEnabled(isknownIngredient);
-                UnitView.setClickable(isknownIngredient);
-                if(isknownIngredient)
+                Ingredient ingr = getExistingIngredientByName(s != null ? s.toString() : "");
+                Log.i("afterTextChanged", ingr != null ? "true" : "false");
+                if(ingr != null) {
+                    UnitView.setEnabled(false);
+                    UnitView.setClickable(false);
                     UnitView.setSelection(ingr.getUnit().ordinal());
+                } else {
+                    UnitView.setEnabled(true);
+                    UnitView.setClickable(true);
+                }
             }
         });
         NameView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -117,36 +119,14 @@ public class EditIngredientsView extends LinearLayout
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Ingredient selected = (Ingredient)parent.getSelectedItem();
                 UnitView.setSelection(selected.getUnit().ordinal());
-                //NameView.setText(selected.getName());
-                //NameView.dismissDropDown();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 Ingredient selected = (Ingredient)parent.getSelectedItem();
                 UnitView.setSelection(selected.getUnit().ordinal());
-                //NameView.setText(selected.getName());
-                //NameView.dismissDropDown();
             }
         });
-        //set spinner
-        /*DropdownNameView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Ingredient selected = (Ingredient)DropdownNameView.getSelectedItem();
-                UnitView.setSelection(selected.getUnit().ordinal());
-                NameView.setText(selected.getName());
-                NameView.dismissDropDown();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                Ingredient selected = (Ingredient)DropdownNameView.getSelectedItem();
-                UnitView.setSelection(selected.getUnit().ordinal());
-                NameView.setText(selected.getName());
-                NameView.dismissDropDown();
-            }
-        });*/
 
         if (ingredient != null) {
             AmountView.setText(String.format("%.2f", ingredient.getAmount()));

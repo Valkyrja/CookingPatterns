@@ -7,7 +7,7 @@
     android:padding="10dp"
     android:clickable="false"
     android:background="@android:drawable/btn_default"
-    android:backgroundTint="#e8ead9">
+    android:backgroundTint="@color/colorWhitePages">
 
     <ImageView
         android:layout_width="80dp"

@@ -173,13 +173,18 @@
                     android:textStyle="italic"
                     android:text="@string/ingredient" />
 
-                <ListView
-                    android:orientation="vertical"
+                <org.cookingpatterns.UtilsAndExtentions.ExpandedListView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:fastScrollEnabled="false"
+                    android:footerDividersEnabled="false"
+                    android:headerDividersEnabled="false"
+                    android:divider="#00ffffff"
+                    android:dividerHeight="0dp"
                     android:id="@+id/listofingredients">
 
-                </ListView>
+                </org.cookingpatterns.UtilsAndExtentions.ExpandedListView>
 
                 <ImageButton
                     android:layout_width="40dp"
@@ -189,7 +194,8 @@
                     android:background="@android:drawable/ic_input_add"
                     android:scaleType="centerInside"
                     android:layout_marginBottom="5sp"
-                    android:layout_marginRight="5sp" />
+                    android:layout_marginRight="5sp"
+                    android:backgroundTint="@color/colorPrimary" />
 
             </LinearLayout>
 
@@ -215,10 +221,9 @@
 
                 <EditText
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minLines="5"
+                    android:layout_height="200dp"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text=""
+                    android:inputType="textMultiLine"
                     android:id="@+id/preparation"
                     android:background="@drawable/border"/>
             </LinearLayout>

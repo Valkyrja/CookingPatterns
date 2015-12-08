@@ -13,7 +13,7 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/decoration"
         android:checked="false"
         android:enabled="true"
@@ -24,57 +24,27 @@
         android:layout_width="10dp"
         android:layout_height="match_parent"/>
 
-    <FrameLayout
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:id="@+id/sizeLayout">
 
         <AutoCompleteTextView
             android:id="@+id/name"
             android:text=""
-            android:layout_width="wrap_content"
             android:minWidth="120dp"
-            android:layout_height= "match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height= "wrap_content"
             android:layout_gravity="fill_horizontal"
-            android:gravity="fill_horizontal"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="normal"
             android:inputType="text"
             android:background="@drawable/border"/>
-        <!--<FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <AutoCompleteTextView
-                android:id="@+id/name"
-                android:text=""
-                android:layout_width="match_parent"
-                android:layout_height= "match_parent"
-                android:gravity="center_vertical|start"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="normal"
-                android:inputType="text"/>
-            <Spinner
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/nameSpinner"
-                android:gravity="center_vertical|start"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="normal"
-                android:spinnerMode="dropdown"/>
-        </FrameLayout>-->
-        <!--<EditText
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="eggs"
-            android:id="@+id/name"
-            android:gravity="center_vertical|start"
-            android:textSize="40sp"
-            android:textStyle="normal"
-            android:inputType="text"/>-->
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|end"
             android:gravity="center_vertical|end">
@@ -86,13 +56,15 @@
                 android:text=""
                 android:id="@+id/amount"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="normal"
+                android:textStyle="bold"
                 android:inputType="number"
-                android:background="@drawable/border"/>
+                android:background="@drawable/border"
+                android:gravity="center_vertical|end"/>
 
             <Space
                 android:layout_width="10dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|end"/>
 
             <Spinner
                 android:layout_width="wrap_content"
@@ -100,9 +72,10 @@
                 android:id="@+id/unit"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal"
-                android:spinnerMode="dialog"
-                android:background="@drawable/border"/>
+                android:spinnerMode="dropdown"
+                android:background="@drawable/border"
+                android:gravity="center_vertical|end"/>
         </LinearLayout>
-    </FrameLayout>
+    </LinearLayout>
 
 </LinearLayout>

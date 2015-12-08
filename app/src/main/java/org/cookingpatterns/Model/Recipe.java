@@ -35,13 +35,7 @@ public class Recipe implements Serializable
 
     {
         Id = id;
-        Name = "";
-        Category = "";
-        Portions = 0;
-        Time = "00:00";
-        Rating = 0;
         ingredients = new ArrayList<Ingredient>();
-        Description = "";
     }
 
     /*public Recipe(UUID id, String name, String category, Integer portions, String time, Integer rating)
@@ -58,9 +52,8 @@ public class Recipe implements Serializable
     public String getName() {
         return Name;
     }
-
     public void setName(String name) {
-        Name = name;
+        Name = name == null ? "" : name;
     }
 
     public List<Ingredient> getIngredients() {
@@ -74,14 +67,14 @@ public class Recipe implements Serializable
     }
 
     public String getCategory() { return Category; }
-    public void setCategory(String category) { Category = category; }
+    public void setCategory(String category) { Category = category == null ? "" : category; }
 
     public Integer getPortions() { return Portions; }
     public String getPortionsAsString() { return Portions == null ? "0" : Portions.toString(); }
-    public void setPortions(Integer portions) { Portions = portions; }
+    public void setPortions(Integer portions) { Portions = portions == null ? 0 : portions; }
 
     public String getTime() { return Time; }
-    public void setTime(String time) { Time = time; }
+    public void setTime(String time) { Time = time == null ? "" : time; }
 
     public ImageInfo getImage() {
         return Image;
@@ -95,15 +88,13 @@ public class Recipe implements Serializable
     }
     public int getRatingNotNullable() { return Rating == null ? 0 : Rating; }
     public void setRating(Integer rating) {
-        Rating = rating;
+        Rating = rating == null ? 0 : rating;
     }
 
     public String getDescription() {
         return Description;
     }
-    public void setDescription(String description) {
-        Description = description;
-    }
+    public void setDescription(String description) { Description = description == null ? "" : description; }
 
     public UUID getId() {
         return Id;
