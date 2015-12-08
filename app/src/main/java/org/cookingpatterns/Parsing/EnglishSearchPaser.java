@@ -10,7 +10,7 @@ import org.cookingpatterns.Model.Ingredient;
  */
 public class EnglishSearchPaser implements ISearchQueryParser {
     @Override
-    public ILiteralNode ParseString(String searchQuery) {
+    public Node ParseString(String searchQuery) {
 
         //I want to cook kaiserschmarrn ,for 3, I have Ei(4) Mehl(500) Milch(500) Salz
 

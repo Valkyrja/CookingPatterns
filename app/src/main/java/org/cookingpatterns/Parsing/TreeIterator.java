@@ -35,7 +35,7 @@ public class TreeIterator implements Iterator<Node> {
                     _next = temp.childes.getFirst();
                 } else {
                     int lastindex = temp.childes.indexOf(lastTemp);
-                    if (temp.childes.size() >= lastindex + 1) {
+                    if (temp.childes.size() >= lastindex + 2) {
                         _next = temp.childes.get(lastindex + 1);
                         continue;
                     }

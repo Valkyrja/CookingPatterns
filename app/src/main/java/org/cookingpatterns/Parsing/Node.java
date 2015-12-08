@@ -1,6 +1,6 @@
 package org.cookingpatterns.Parsing;
 
-import org.cookingpatterns.Interfaces.ILiteralNode;
+import org.cookingpatterns.Interfaces.ISyntaxTreeVisitor;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -8,7 +8,7 @@ import java.util.LinkedList;
 /**
  * Created by Andreas on 30.11.2015.
  */
-public abstract class Node implements ILiteralNode, Iterable<Node> {
+public abstract class Node implements Iterable<Node> {
 
     public LinkedList<Node> childes;
     public Node parent;
@@ -35,4 +35,6 @@ public abstract class Node implements ILiteralNode, Iterable<Node> {
     public Iterator<Node> iterator() {
         return new TreeIterator(this);
     }
+
+    public abstract void acceptVisitor(ISyntaxTreeVisitor visitor);
 }
