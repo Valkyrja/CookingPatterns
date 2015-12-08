@@ -44,11 +44,11 @@ public class SqlLiteDataProvider implements IDataProvider {
                         RecipeEntry.COLUMN_TIME.Name,
                         RecipeEntry.COLUMN_RATING.Name
                 },// The columns to return
-                null,                                                    // The columns for the WHERE clause
-                null,                                                    // The values for the WHERE clause
-                null,                                                    // don't group the rows
-                null,                                                    // don't filter by row groups
-                RecipeEntry.COLUMN_NAME.Name + " ASC"      // The sort order
+                null,                                     // The columns for the WHERE clause
+                null,                                     // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                RecipeEntry.COLUMN_NAME.Name + " ASC"     // The sort order
         );
 
         List<Recipe> list = mapRecipes(cursor);
@@ -92,15 +92,16 @@ public class SqlLiteDataProvider implements IDataProvider {
         //add ingredients to recipes
         for (Recipe recipe : recipes) {
 
-            String sql = "SELECT " +
-                    RecipeIngredientEntry.COLUMN_AMOUNT.Name + ", " +
-                    IngredientEntry.COLUMN_ID.Name + ", " +
-                    IngredientEntry.COLUMN_NAME.Name + ", " +
+            String sql = "SELECT ri." +
+                    RecipeIngredientEntry.COLUMN_AMOUNT.Name + ", i." +
+                    IngredientEntry.COLUMN_ID.Name + ", i." +
+                    IngredientEntry.COLUMN_NAME.Name + ", i." +
                     IngredientEntry.COLUMN_UNIT.Name + " " +
-                    "FROM " + RecipeIngredientEntry.TABLE_NAME + " INNER JOIN " + IngredientEntry.TABLE_NAME + " ON " +
-                    RecipeIngredientEntry.TABLE_NAME + "." + RecipeIngredientEntry.COLUMN_INGREDIENTID.Name +
-                    " = " + IngredientEntry.TABLE_NAME + "." + IngredientEntry.COLUMN_ID.Name + " " +
-                    "WHERE " + RecipeIngredientEntry.TABLE_NAME + "." + RecipeIngredientEntry.COLUMN_RECIPEID.Name + " = ?";
+                    "FROM " + RecipeIngredientEntry.TABLE_NAME + " AS ri INNER JOIN " +
+                    IngredientEntry.TABLE_NAME + " AS i ON " +
+                    "ri." + RecipeIngredientEntry.COLUMN_INGREDIENTID.Name +
+                    " = i." + IngredientEntry.COLUMN_ID.Name + " " +
+                    "WHERE ri." + RecipeIngredientEntry.COLUMN_RECIPEID.Name + " = ?";
 
             Cursor cursor = readableDatabase.rawQuery(sql, new String[]{recipe.getId().toString()});
 
@@ -256,11 +257,11 @@ public class SqlLiteDataProvider implements IDataProvider {
                         IngredientEntry.COLUMN_ID.Name,
                         IngredientEntry.COLUMN_NAME.Name,
                         IngredientEntry.COLUMN_UNIT.Name},// The columns to return
-                null,                                                    // The columns for the WHERE clause
-                null,                                                    // The values for the WHERE clause
-                null,                                                    // don't group the rows
-                null,                                                    // don't filter by row groups
-                IngredientEntry.COLUMN_NAME.Name + " ASC"      // The sort order
+                null,                                     // The columns for the WHERE clause
+                null,                                     // The values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                IngredientEntry.COLUMN_NAME.Name + " ASC" // The sort order
         );
 
         List<Ingredient> list = new LinkedList<>();

@@ -1,7 +1,6 @@
 package org.cookingpatterns.Parsing;
 
 import org.apache.commons.lang.StringUtils;
-import org.cookingpatterns.Interfaces.ILiteralNode;
 import org.cookingpatterns.Interfaces.ISearchQueryParser;
 import org.cookingpatterns.Model.Ingredient;
 

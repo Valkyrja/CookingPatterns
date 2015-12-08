@@ -1,21 +1,22 @@
 package org.cookingpatterns.Parsing;
 
+
 import org.cookingpatterns.Interfaces.ISyntaxTreeVisitor;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
  * Created by Andreas on 30.11.2015.
  */
-public abstract class Node implements Iterable<Node> {
+public abstract class Node implements Iterable<Node>, Serializable {
 
     public LinkedList<Node> childes;
     public Node parent;
 
-    public Node()
-    {
-        childes = new LinkedList<Node>();
+    public Node() {
+        childes = new LinkedList<>();
     }
 
     public boolean hasChildren() {

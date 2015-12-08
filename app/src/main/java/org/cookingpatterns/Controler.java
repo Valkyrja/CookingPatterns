@@ -34,6 +34,7 @@ import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Model.Recipe;
 import org.cookingpatterns.Model.UnitOfMeasure;
 import org.cookingpatterns.Parsing.EnglishSearchPaser;
+import org.cookingpatterns.Parsing.Node;
 import org.cookingpatterns.UtilsAndExtentions.OmittedDataCallback;
 import org.cookingpatterns.View.DisplayRecipeFragment;
 import org.cookingpatterns.View.EditRecipeFragment;
@@ -148,7 +149,7 @@ public class Controler extends RoboActivity
     private void HandleSearchRequestClicked(@Observes OnSearchRequestClick event) {
         Log.i("Controler", "OnSearchRequestClicked");
 
-        ILiteralNode root = parser.ParseString(event.GetQuery());
+        Node root = parser.ParseString(event.GetQuery());
         Bundle args = new Bundle();
         args.putSerializable("searchTree", root);
 
