@@ -49,7 +49,7 @@ public class SqlLiteSyntaxTreeVisitor implements ISyntaxTreeVisitor {
                 sql += ") "; // close bracket of count in HaveNode
                 break;
         }
-        
+
         state = newState;
     }
 

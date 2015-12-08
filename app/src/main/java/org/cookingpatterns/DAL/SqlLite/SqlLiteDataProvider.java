@@ -252,7 +252,7 @@ public class SqlLiteDataProvider implements IDataProvider {
         SQLiteDatabase readableDatabase = SqlLiteHelper.getInstance(_context).getReadableDatabase();
 
         Cursor cursor = readableDatabase.query(
-                RecipeEntry.TABLE_NAME,                    // The table to query
+                IngredientEntry.TABLE_NAME,                    // The table to query
                 new String[]{
                         IngredientEntry.COLUMN_ID.Name,
                         IngredientEntry.COLUMN_NAME.Name,
