@@ -43,6 +43,7 @@ public class SqlLiteSyntaxTreeVisitor implements ISyntaxTreeVisitor {
     private void SwitchState(int newState) {
         switch (state) {
             case 1:
+                sql += ") ";
                 break;
             case 2:
                 sql += ") ";
