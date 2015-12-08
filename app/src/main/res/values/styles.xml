@@ -8,7 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:editTextStyle">@style/editText</item>
 
-
         <item name="android:textColor">@color/wallet_dim_foreground_inverse_holo_dark</item>
         <item name="android:textColorPrimary">@color/wallet_dim_foreground_inverse_holo_dark</item>
         <item name="android:textColorSecondary">@android:color/primary_text_dark_nodisable</item>
@@ -28,6 +27,23 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:editTextStyle">@style/editText</item>
+
+        <item name="android:textColor">@color/wallet_dim_foreground_inverse_holo_dark</item>
+        <item name="android:textColorPrimary">@color/wallet_dim_foreground_inverse_holo_dark</item>
+        <item name="android:textColorSecondary">@android:color/primary_text_dark_nodisable</item>
+        <item name="android:textColorTertiary">@android:color/primary_text_dark_nodisable</item>
+        <item name="android:textColorPrimaryInverse">@android:color/primary_text_dark_nodisable</item>
+        <item name="android:textColorSecondaryInverse">@android:color/primary_text_dark_nodisable</item>
+        <item name="android:textColorTertiaryInverse">@android:color/primary_text_dark_nodisable</item>
+        <item name="android:textColorPrimaryDisableOnly">@android:color/primary_text_dark_nodisable</item>
+        <item name="android:textColorPrimaryInverseDisableOnly">@android:color/primary_text_dark_nodisable</item>
+        <item name="android:textColorPrimaryNoDisable">@android:color/primary_text_dark_nodisable</item>
+        <item name="android:textColorSecondaryNoDisable">@android:color/secondary_text_dark_nodisable</item>
+        <item name="android:textColorPrimaryInverseNoDisable">@android:color/primary_text_dark_nodisable</item>
+        <item name="android:textColorSecondaryInverseNoDisable">@android:color/primary_text_dark_nodisable</item>
+        <item name="android:textColorHint">@android:color/primary_text_dark_nodisable</item>
+        <item name="android:textColorHintInverse">@android:color/primary_text_dark_nodisable</item>
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

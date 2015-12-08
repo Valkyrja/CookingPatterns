@@ -30,6 +30,8 @@ import org.cookingpatterns.Model.ImageInfo;
 import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Model.Recipe;
 import org.cookingpatterns.R;
+import org.cookingpatterns.UtilsAndExtentions.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,11 +84,7 @@ public class EditRecipeFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
-        if (savedInstanceState != null) {
-            RecipeToBeDisplayed  = (Recipe)savedInstanceState.getSerializable("Recipe");
-            CreateNewRecipe  = (boolean)savedInstanceState.getBoolean("CreateNewRecipe");
-        }
-        else if (getArguments() != null) {
+        if (getArguments() != null) {
             RecipeToBeDisplayed  = (Recipe)getArguments().getSerializable("Recipe");
             CreateNewRecipe  = (boolean)getArguments().getBoolean("CreateNewRecipe");
         }
@@ -142,6 +140,7 @@ public class EditRecipeFragment extends Fragment
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("EditRecipeFragment", "OnDeleteIngredient");
+                Utils.HapticFeedbackShort(getActivity());
                 IngdientsAdapter.remove(IngdientsAdapter.getItem(position));
                 return true;
             }

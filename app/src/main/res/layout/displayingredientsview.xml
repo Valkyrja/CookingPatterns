@@ -15,10 +15,11 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/decoration"
+        android:adjustViewBounds="true"
         android:checked="false"
         android:enabled="true"
         android:clickable="false"
-        android:background="@android:drawable/ic_menu_compass" />
+        android:src="@android:drawable/ic_menu_compass" />
 
     <Space
         android:layout_width="10sp"

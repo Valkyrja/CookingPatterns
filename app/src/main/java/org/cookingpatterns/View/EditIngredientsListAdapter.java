@@ -49,18 +49,29 @@ public class EditIngredientsListAdapter extends ArrayAdapter<Ingredient>
         super.addAll(collection);
     }
 
-    /**
-     * Adds the specified items at the end of the array.
-     *
-     * @param items The items to add at the end of the array.
-     */
     public void setAll(Ingredient ... items) {
         super.clear();
         super.addAll(items);
     }
 
     public void propagateSelectFromList(List<Ingredient> collection) {
-        existingSelection = collection;
+        existingSelection.addAll(collection);
+    }
+
+    @Override
+    public void remove(Ingredient object) {
+        int position = super.getPosition(object);
+        if(views.containsKey(position))
+        {
+            views.remove(position);
+        }
+        super.remove(object);
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        views.clear();
     }
 
     public List<Ingredient> ExtractIngredients()

@@ -62,10 +62,7 @@ public class DisplayRecipeFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
-        if (savedInstanceState != null) {
-            RecipeToBeDisplayed  = (Recipe)savedInstanceState.getSerializable("Recipe");
-        }
-        else if (getArguments() != null) {
+        if (getArguments() != null) {
             RecipeToBeDisplayed  = (Recipe)getArguments().getSerializable("Recipe");
         }
     }
@@ -140,5 +137,10 @@ public class DisplayRecipeFragment extends Fragment
     private void OnUpdateRecipeDataEvent(@Observes OnUpdateRecipeDataForViewEvent event) {
         Log.i("DisplayRecipeFragment","OnUpdateRecipeDataEvent");
         // start Intent for the corresponding gauge
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+
+            }
+        });
     }
 }

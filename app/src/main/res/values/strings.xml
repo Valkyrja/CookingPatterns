@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CookingPatterns</string>
+    <string name="app_name">Cooking Patterns</string>
     <string name="title_activity_search">Search Recipe</string>
     <string name="title_activity_edit_recipe">Edit Recipe</string>
     <string name="ingredient">Ingredient</string>

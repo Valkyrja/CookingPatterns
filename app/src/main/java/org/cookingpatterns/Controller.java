@@ -44,11 +44,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import roboguice.activity.RoboActivity;
+import roboguice.activity.RoboFragmentActivity;
 import roboguice.event.Observes;
 import roboguice.inject.ContentView;
 
 @ContentView(R.layout.activity_controler)
-public class Controler extends RoboActivity
+public class Controller extends RoboActivity
 {
     private ISearchQueryParser parser = new EnglishSearchPaser();
 
@@ -59,7 +60,7 @@ public class Controler extends RoboActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.i("Controler", "onCreate");
+        Log.i("Controller", "onCreate");
 
         if(savedInstanceState == null || !savedInstanceState.getBoolean("HasFragment"))
         {
@@ -72,52 +73,26 @@ public class Controler extends RoboActivity
         getFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
             @Override
             public void onBackStackChanged() {
-                Log.i("Controler", "onBackStackChanged");
+                Log.i("Controller", "onBackStackChanged");
             }
         });
-
-        /*ArrayList<Recipe> list = new ArrayList<Recipe>();
-        Recipe res = new Recipe();
-        res.setName("Eierspeiß");
-        res.setRating(2);
-        res.setTime("00:10");
-        res.setCategory("Fast&Furious");
-        List<Ingredient> ingr = new ArrayList<Ingredient>();
-        Ingredient in = new Ingredient();
-        in.setAmount(2);
-        in.setName("Eier");
-        in.setUnit(UnitOfMeasure.pcs);
-        ingr.add(in);
-        res.setIngredients(ingr);
-        res.setDescription("Für die Eierspeis die Eier in eine Schüssel schlagen und mit Salz sowie Pfeffer würzen. Mit einer Gabel verschlagen.In einer Pfanne geben.");
-        list.add(res);
-
-        Bundle args = new Bundle();
-        args.putSerializable("ingredient", in);
-        DataLoader loader = new AddIngredientLoader(this, args);
-        DataLoaderManager.init(getLoaderManager(), DataLoaderManager.ADDINGREDIENT_LOADER_ID, loader, new OmittedDataCallback("Controler"));
-
-        args = new Bundle();
-        args.putSerializable("recipe", res);
-        loader = new AddRecipeLoader(this, args);
-        DataLoaderManager.init(getLoaderManager(), DataLoaderManager.ADDRECIPE_LOADER_ID, loader, new OmittedDataCallback("Controler"));*/
     }
 
     protected void onSaveInstanceState (Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean("HasFragment", true);
 
-        Log.i("Controler", "onSaveInstanceState");
+        Log.i("Controller", "onSaveInstanceState");
     }
 
     private void HandleNewRecipeClicked(@Observes OnNewRecipeClick event) {
-        Log.i("Controler", "OnNewRecipeClicked");
+        Log.i("Controller", "OnNewRecipeClicked");
         Fragment fragment = EditRecipeFragment.CreateFragment(new Recipe(), true);
         switchFragment(fragment);
     }
 
     private void HandleSaveRecipeClicked(@Observes OnSaveRecipeClick event) {
-        Log.i("Controler", "OnSaveRecipeClicked");
+        Log.i("Controller", "OnSaveRecipeClicked");
         getFragmentManager().popBackStack();
 
         Bundle args = new Bundle();
@@ -125,43 +100,45 @@ public class Controler extends RoboActivity
 
         if(event.getIsNew()) {
             DataLoader loader = new AddRecipeLoader(this, args);
-            DataLoaderManager.init(getLoaderManager(), DataLoaderManager.ADDRECIPE_LOADER_ID, loader, new OmittedDataCallback("Controler SaveRecipe New"));
+            DataLoaderManager.init(getLoaderManager(), DataLoaderManager.ADDRECIPE_LOADER_ID, loader, new OmittedDataCallback("Controller SaveRecipe New"));
         }
         else
         {
             DataLoader loader = new UpdateRecipeLoader(this, args);
-            DataLoaderManager.init(getLoaderManager(), DataLoaderManager.UPDATERECIPE_LOADER_ID, loader, new OmittedDataCallback("Controler SaveRecipe Edit"));
+            DataLoaderManager.init(getLoaderManager(), DataLoaderManager.UPDATERECIPE_LOADER_ID, loader, new OmittedDataCallback("Controller SaveRecipe Edit"));
         }
     }
 
     private void HandleEditRecipeClicked(@Observes OnEditRecipeClick event) {
-        Log.i("Controler", "OnEditRecipeClicked");
+        Log.i("Controller", "OnEditRecipeClicked");
         Fragment fragment = EditRecipeFragment.CreateFragment(event.getRecipe(), false);
         switchFragment(fragment);
     }
 
     private void HandleDisplayRecipeClicked(@Observes OnDisplayRecipeClick event) {
-        Log.i("Controler","OnDisplayRecipeClicked");
+        Log.i("Controller", "OnDisplayRecipeClicked");
         Fragment fragment = DisplayRecipeFragment.CreateFragment(event.getRecipe());
         switchFragment(fragment);
     }
 
     private void HandleSearchRequestClicked(@Observes OnSearchRequestClick event) {
-        Log.i("Controler", "OnSearchRequestClicked");
+        Log.i("Controller", "OnSearchRequestClicked");
 
-        Node root = parser.ParseString(event.GetQuery());
         Bundle args = new Bundle();
-        args.putSerializable("searchTree", root);
+        Node root = parser.ParseString(event.GetQuery());
+        if(root.hasChildren()) {
+            args.putSerializable("searchTree", root);
+        }
 
         DataLoader loader = new RecipeLoader(this, args);
-        DataLoaderManager.init(getLoaderManager(), DataLoaderManager.RECIPE_LOADER_ID, loader, new OmittedDataCallback("Controler SearchRequest"));
+        DataLoaderManager.init(getLoaderManager(), DataLoaderManager.RECIPE_LOADER_ID, loader, new OmittedDataCallback("Controller SearchRequest"));
     }
 
     private void HandleRequestAllIngredientsEvent(@Observes OnRequestAllIngredientsEvent event) {
-        Log.i("Controler", "OnRequestAllIngredientsEvent");
+        Log.i("Controller", "OnRequestAllIngredientsEvent");
 
         DataLoader loader = new IngredientLoader(this, null);
-        DataLoaderManager.init(getLoaderManager(), DataLoaderManager.INGREDIENT_LOADER_ID, loader, new OmittedDataCallback("Controler Request All Ingredients"));
+        DataLoaderManager.init(getLoaderManager(), DataLoaderManager.INGREDIENT_LOADER_ID, loader, new OmittedDataCallback("Controller Request All Ingredients"));
     }
 
     private void HandleIngredientListResponseEvent(@Observes OnIngredientListResponseEvent event)
@@ -201,7 +178,7 @@ public class Controler extends RoboActivity
     }
 
     private void HandleRecalculatePortionsClicked(@Observes OnRecalculatePortionsClick event) {
-        Log.i("Controler","OnUpdateRecipeDataEvent");
+        Log.i("Controller","OnUpdateRecipeDataEvent");
         // start Intent for the corresponding gauge
     }
 

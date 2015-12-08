@@ -14,7 +14,7 @@ public class EnglishSearchPaser implements ISearchQueryParser {
         //I want to cook kaiserschmarrn ,for 3, I have Ei(4) Mehl(500) Milch(500) Salz
 
         //example tree
-        RootNode rootNode = new RootNode();
+        /*RootNode rootNode = new RootNode();
 
         // create cookNode
         CookNode cookNode = new CookNode();
@@ -48,7 +48,7 @@ public class EnglishSearchPaser implements ISearchQueryParser {
         ingredient = new Ingredient();
         ingredient.setName("Salz");
         ingredientNode = new IngredientNode(ingredient);
-        haveNode.addChild(ingredientNode);
+        haveNode.addChild(ingredientNode);*/
 
 
         String[] parts = searchQuery.split("\\s*,\\s*"); //split by comma and remove whitespaces
@@ -97,6 +97,6 @@ public class EnglishSearchPaser implements ISearchQueryParser {
             
         }
 
-        return root.hasChildren() ? root : rootNode; // only for testing remove example tree later
+        return root;//root.hasChildren() ? root : rootNode; // only for testing remove example tree later
     }
 }
