@@ -43,14 +43,13 @@ public class SqlLiteSyntaxTreeVisitor implements ISyntaxTreeVisitor {
     private void SwitchState(int newState) {
         switch (state) {
             case 1:
-                sql += ") ";
+                sql += ") "; // close bracket of CoolNode
                 break;
             case 2:
-                sql += ") ";
+                sql += ") "; // close bracket of count in HaveNode
                 break;
         }
-
-
+        
         state = newState;
     }
 
