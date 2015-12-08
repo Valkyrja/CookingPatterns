@@ -45,9 +45,10 @@ public class SqlLiteSyntaxTreeVisitor implements ISyntaxTreeVisitor {
             case 1:
                 break;
             case 2:
+                sql += ") ";
                 break;
         }
-        sql += ") ";
+
 
         state = newState;
     }
