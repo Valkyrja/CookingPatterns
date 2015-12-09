@@ -98,7 +98,7 @@ public class SqlLiteSyntaxTreeVisitor implements ISyntaxTreeVisitor {
     public void VisitTextNode(TextNode node) {
 
         sql += RecipeEntry.COLUMN_NAME.Name + " LIKE ? ";
-        sqlParameter.push(node.getText());
+        sqlParameter.push("%" + node.getText() + "%");
 
         if (!_operatorStack.isEmpty()) {
             sql += _operatorStack.pop();
