@@ -82,7 +82,7 @@
                 android:background="@drawable/border"
                 android:singleLine="true"
                 android:textColor="@color/wallet_dim_foreground_inverse_holo_dark"
-                android:popupBackground="@android:color/transparent"/>
+                android:popupBackground="@android:color/white"/>
         </LinearLayout>
     </LinearLayout>
 

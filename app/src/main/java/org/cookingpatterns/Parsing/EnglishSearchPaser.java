@@ -61,7 +61,7 @@ public class EnglishSearchPaser implements ISearchQueryParser {
                 CookNode iWantToCook = new CookNode();
                 root.addChild(iWantToCook);
 
-                String a = part.substring(13);
+                String a = part.substring(15);
                 TextNode textNode1 = new TextNode(a);
                 iWantToCook.addChild(textNode1);
 
@@ -71,7 +71,7 @@ public class EnglishSearchPaser implements ISearchQueryParser {
                 HaveNode ihave = new HaveNode();
                 root.addChild(ihave);
 
-                String a = part.substring(6);
+                String a = part.substring(8);
                 String[] ingreedientstrings = a.split("\\s+"); //split by whitespace
 
                 for (String ingreedientstring : ingreedientstrings) {
