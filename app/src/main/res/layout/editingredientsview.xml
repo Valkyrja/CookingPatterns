@@ -41,7 +41,8 @@
             android:textStyle="normal"
             android:inputType="text"
             android:background="@drawable/border"
-            android:singleLine="true"/>
+            android:singleLine="true"
+            android:textColor="@color/wallet_dim_foreground_inverse_holo_dark"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -61,7 +62,8 @@
                 android:textStyle="bold"
                 android:inputType="number"
                 android:background="@drawable/border"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:textColor="@color/wallet_dim_foreground_inverse_holo_dark"/>
 
             <Space
                 android:layout_width="10sp"
@@ -77,7 +79,8 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="normal"
                 android:background="@drawable/border"
-                android:singleLine="true"/>
+                android:singleLine="true"
+                android:textColor="@color/wallet_dim_foreground_inverse_holo_dark"/>
         </LinearLayout>
     </LinearLayout>
 

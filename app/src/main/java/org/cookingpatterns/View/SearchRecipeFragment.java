@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -128,6 +129,8 @@ public class SearchRecipeFragment extends Fragment
                 eventManager.fire(new OnSearchRequestClick(lastCommittedQuery));
             }
         });
+
+
     }
 
     public void onViewStateRestored(@Nullable Bundle savedInstanceState)

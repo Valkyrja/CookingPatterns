@@ -85,11 +85,11 @@ public class EditIngredientsView extends LinearLayout
         super.onFinishInflate();
 
         ArrayAdapter<String> unitAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, Utils.getNames(UnitOfMeasure.class));
-        unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        unitAdapter.setDropDownViewResource(R.layout.dropdownliststyle);
         UnitView.setAdapter(unitAdapter);
 
         //set auto complete
-        ArrayAdapter<Ingredient> adapter = new ArrayAdapter<Ingredient>(getContext(), android.R.layout.simple_dropdown_item_1line, existingSelection);
+        ArrayAdapter<Ingredient> adapter = new ArrayAdapter<Ingredient>(getContext(), R.layout.dropdownliststyle, existingSelection);
         NameView.setAdapter(adapter);
         NameView.addTextChangedListener(new TextWatcher() {
             @Override

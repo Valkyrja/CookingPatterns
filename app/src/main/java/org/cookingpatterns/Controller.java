@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.cookingpatterns.DAL.DataProviderManager;
 import org.cookingpatterns.EventMessages.OnDisplayRecipeClick;
 import org.cookingpatterns.EventMessages.OnEditRecipeClick;
 import org.cookingpatterns.EventMessages.OnIngredientListResponseEvent;
@@ -19,20 +18,16 @@ import org.cookingpatterns.EventMessages.OnRecipeListResponseEvent;
 import org.cookingpatterns.EventMessages.OnRequestAllIngredientsEvent;
 import org.cookingpatterns.EventMessages.OnSaveRecipeClick;
 import org.cookingpatterns.EventMessages.OnSearchRequestClick;
-import org.cookingpatterns.Interfaces.ILiteralNode;
 import org.cookingpatterns.Interfaces.ISearchQueryParser;
-import org.cookingpatterns.Loader.AddIngredientLoader;
 import org.cookingpatterns.Loader.AddRecipeLoader;
 import org.cookingpatterns.Loader.DataLoader;
 import org.cookingpatterns.Loader.DataLoaderManager;
 import org.cookingpatterns.Loader.DataResponse;
-import org.cookingpatterns.Loader.IDataCallback;
 import org.cookingpatterns.Loader.IngredientLoader;
 import org.cookingpatterns.Loader.RecipeLoader;
 import org.cookingpatterns.Loader.UpdateRecipeLoader;
 import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Model.Recipe;
-import org.cookingpatterns.Model.UnitOfMeasure;
 import org.cookingpatterns.Parsing.EnglishSearchPaser;
 import org.cookingpatterns.Parsing.Node;
 import org.cookingpatterns.UtilsAndExtentions.OmittedDataCallback;
@@ -40,11 +35,9 @@ import org.cookingpatterns.View.DisplayRecipeFragment;
 import org.cookingpatterns.View.EditRecipeFragment;
 import org.cookingpatterns.View.SearchRecipeFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import roboguice.activity.RoboActivity;
-import roboguice.activity.RoboFragmentActivity;
 import roboguice.event.Observes;
 import roboguice.inject.ContentView;
 
@@ -100,12 +93,12 @@ public class Controller extends RoboActivity
 
         if(event.getIsNew()) {
             DataLoader loader = new AddRecipeLoader(this, args);
-            DataLoaderManager.init(getLoaderManager(), DataLoaderManager.ADDRECIPE_LOADER_ID, loader, new OmittedDataCallback("Controller SaveRecipe New"));
+            DataLoaderManager.start(getLoaderManager(), DataLoaderManager.ADDRECIPE_LOADER_ID, loader, new OmittedDataCallback("Controller SaveRecipe New"));
         }
         else
         {
             DataLoader loader = new UpdateRecipeLoader(this, args);
-            DataLoaderManager.init(getLoaderManager(), DataLoaderManager.UPDATERECIPE_LOADER_ID, loader, new OmittedDataCallback("Controller SaveRecipe Edit"));
+            DataLoaderManager.start(getLoaderManager(), DataLoaderManager.UPDATERECIPE_LOADER_ID, loader, new OmittedDataCallback("Controller SaveRecipe Edit"));
         }
     }
 
@@ -131,14 +124,14 @@ public class Controller extends RoboActivity
         }
 
         DataLoader loader = new RecipeLoader(this, args);
-        DataLoaderManager.init(getLoaderManager(), DataLoaderManager.RECIPE_LOADER_ID, loader, new OmittedDataCallback("Controller SearchRequest"));
+        DataLoaderManager.start(getLoaderManager(), DataLoaderManager.RECIPE_LOADER_ID, loader, new OmittedDataCallback("Controller SearchRequest"));
     }
 
     private void HandleRequestAllIngredientsEvent(@Observes OnRequestAllIngredientsEvent event) {
         Log.i("Controller", "OnRequestAllIngredientsEvent");
 
         DataLoader loader = new IngredientLoader(this, null);
-        DataLoaderManager.init(getLoaderManager(), DataLoaderManager.INGREDIENT_LOADER_ID, loader, new OmittedDataCallback("Controller Request All Ingredients"));
+        DataLoaderManager.start(getLoaderManager(), DataLoaderManager.INGREDIENT_LOADER_ID, loader, new OmittedDataCallback("Controller Request All Ingredients"));
     }
 
     private void HandleIngredientListResponseEvent(@Observes OnIngredientListResponseEvent event)
