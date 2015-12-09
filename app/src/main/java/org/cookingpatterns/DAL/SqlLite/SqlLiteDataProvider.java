@@ -193,11 +193,11 @@ public class SqlLiteDataProvider implements IDataProvider {
             writableDatabase.beginTransaction();
 
             String sql = "UPDATE " + RecipeEntry.TABLE_NAME + " SET " +
-                    RecipeEntry.COLUMN_NAME.Name + " = ? " +
-                    RecipeEntry.COLUMN_CATEGORY.Name + " = ? " +
-                    RecipeEntry.COLUMN_DESCRIPTION.Name + " = ? " +
-                    RecipeEntry.COLUMN_PORTIONS.Name + " = ? " +
-                    RecipeEntry.COLUMN_RATING.Name + " = ? " +
+                    RecipeEntry.COLUMN_NAME.Name + " = ? , " +
+                    RecipeEntry.COLUMN_CATEGORY.Name + " = ? , " +
+                    RecipeEntry.COLUMN_DESCRIPTION.Name + " = ? , " +
+                    RecipeEntry.COLUMN_PORTIONS.Name + " = ? , " +
+                    RecipeEntry.COLUMN_RATING.Name + " = ? , " +
                     RecipeEntry.COLUMN_TIME.Name + " = ? " +
                     "WHERE " + RecipeEntry.COLUMN_ID.Name + " = ?";
             SQLiteStatement statement = writableDatabase.compileStatement(sql);
