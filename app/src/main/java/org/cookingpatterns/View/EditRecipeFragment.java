@@ -181,7 +181,7 @@ public class EditRecipeFragment extends Fragment
         RecipeToBeDisplayed.setDescription(Preparation.getText().toString());
 
         RecipeToBeDisplayed.setRating((int) Rating.getRating());
-        RecipeToBeDisplayed.setPortions(Integer.getInteger(Portion.getText().toString()));
+        RecipeToBeDisplayed.setPortions(Integer.parseInt(Portion.getText().toString()));
 
         RecipeToBeDisplayed.setImage(new ImageAsUri((String) Picture.getTag()));
         RecipeToBeDisplayed.setIngredients(IngdientsAdapter.ExtractIngredients());

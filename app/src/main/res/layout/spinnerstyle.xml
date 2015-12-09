@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text1"
+    style="simple_dropdown_item_1line"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/border"
     android:textColor="@color/wallet_dim_foreground_inverse_holo_dark"/>

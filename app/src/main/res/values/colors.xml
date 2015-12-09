@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#06A883</color>
     <color name="colorAccentLight">#BCFFEA</color>
     <color name="colorAccent">#FF5C50</color>
+    <color name="colorGrayPagesSolid">#FFCCCCCC</color>
     <color name="colorGrayPages">#336C6C6C</color>
     <color name="colorWhitePages">#33DDDDDD</color>
 </resources>

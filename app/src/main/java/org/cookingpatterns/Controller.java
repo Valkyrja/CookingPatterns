@@ -118,8 +118,8 @@ public class Controller extends RoboActivity
         Log.i("Controller", "OnSearchRequestClicked");
 
         Bundle args = new Bundle();
-        Node root = parser.ParseString(event.GetQuery());
-        if(root.hasChildren()) {
+        if(event.GetQuery() != null && !event.GetQuery().isEmpty()) {
+            Node root = parser.ParseString(event.GetQuery());
             args.putSerializable("searchTree", root);
         }
 
