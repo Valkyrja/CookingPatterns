@@ -23,11 +23,11 @@ public class DataLoaderManager {
 
     }*/
 
-    public static <D> void init(final LoaderManager manager, final int loaderId,
-                                final DataLoader<D> loader, final IDataCallback<D> callback) {
+    public static <D> void start(final LoaderManager manager, final int loaderId,
+                                 final DataLoader<D> loader, final IDataCallback<D> callback) {
 
         //TODO or restart?
-        manager.initLoader(loaderId, Bundle.EMPTY, new LoaderCallbacks<DataResponse<D>>() {
+        manager.restartLoader(loaderId, Bundle.EMPTY, new LoaderCallbacks<DataResponse<D>>() {
 
             @Override
             public Loader<DataResponse<D>> onCreateLoader(int id, Bundle args) {

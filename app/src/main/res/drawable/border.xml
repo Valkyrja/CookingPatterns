@@ -4,5 +4,5 @@
     <padding android:left="8dp" android:top="8dp" android:right="8dp" android:bottom="8dp" />
     <stroke android:width="6dp" android:color="#00aaaaaa"/>
     <solid android:color="@color/colorGrayPages" />
-    <corners android:radius="4dp"/>
+    <!--<corners android:radius="4dp"/>-->
 </shape>

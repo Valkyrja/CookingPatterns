@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -32,6 +34,8 @@ import org.cookingpatterns.Model.Ingredient;
 import org.cookingpatterns.Model.Recipe;
 import org.cookingpatterns.Model.UnitOfMeasure;
 import org.cookingpatterns.R;
+import org.cookingpatterns.UtilsAndExtentions.Utils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +58,7 @@ public class SearchRecipeFragment extends Fragment
     private EventManager eventManager;
 
     private RecipeListAdapter RecipeAdapter;
+    private CharSequence lastCommittedQuery;
 
     public static SearchRecipeFragment CreateFragment()
     {
@@ -68,10 +73,12 @@ public class SearchRecipeFragment extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         RoboGuice.getInjector(getActivity()).injectMembersWithoutViews(this);
-        if (getArguments() != null) {
-            //TODO RestoreState
-            //mParam1 = getArguments().getString(ARG_PARAM1);
-            //mParam2 = getArguments().getString(ARG_PARAM2);
+        if (getArguments() != null)
+        {
+            lastCommittedQuery = getArguments().getString("LastCommittedQuery");
+            SearchQuery.setText(getArguments().getString("Query"));
+            if (lastCommittedQuery != null)
+                eventManager.fire(new OnSearchRequestClick(lastCommittedQuery));
         }
     }
 
@@ -89,21 +96,6 @@ public class SearchRecipeFragment extends Fragment
         RecipeAdapter = new RecipeListAdapter(getActivity().getApplication(), new ArrayList<Recipe>());
         ResultList.setAdapter(RecipeAdapter);
 
-        Recipe res = new Recipe();
-        res.setName("Eierspeiß");
-        res.setRating(2);
-        res.setTime("00:10");
-        res.setCategory("Fast&Furious");
-        List<Ingredient> ingr = new ArrayList<Ingredient>();
-        Ingredient in = new Ingredient();
-        in.setAmount(2);
-        in.setName("Eier");
-        in.setUnit(UnitOfMeasure.pcs);
-        ingr.add(in);
-        res.setIngredients(ingr);
-        res.setDescription("Für die Eierspeis die Eier in eine Schüssel schlagen und mit Salz sowie Pfeffer würzen. Mit einer Gabel verschlagen.In einer Pfanne geben.");
-        RecipeAdapter.add(res);
-
         ResultList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -115,6 +107,7 @@ public class SearchRecipeFragment extends Fragment
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("SearchRecipeFragment", "OnEditRecipeClick");
+                Utils.HapticFeedbackShort(getActivity());
                 eventManager.fire(new OnEditRecipeClick((Recipe) parent.getItemAtPosition(position)));
                 return true;
             }
@@ -132,9 +125,12 @@ public class SearchRecipeFragment extends Fragment
             @Override
             public void onClick(View view) {
                 Log.i("SearchRecipeFragment", "OnSearchRequestClick");
-                eventManager.fire(new OnSearchRequestClick(SearchQuery.getText()));
+                lastCommittedQuery = SearchQuery.getText();
+                eventManager.fire(new OnSearchRequestClick(lastCommittedQuery));
             }
         });
+
+
     }
 
     public void onViewStateRestored(@Nullable Bundle savedInstanceState)
@@ -143,24 +139,31 @@ public class SearchRecipeFragment extends Fragment
         Log.i("SearchRecipeFragment", "onViewStateRestored");
         if(savedInstanceState != null)
         {
+            lastCommittedQuery = savedInstanceState.getString("LastCommittedQuery");
             SearchQuery.setText(savedInstanceState.getString("Query"));
-            eventManager.fire(new OnSearchRequestClick(SearchQuery.getText()));
-        }
+            if (lastCommittedQuery != null)
+                eventManager.fire(new OnSearchRequestClick(lastCommittedQuery));        }
     }
 
     public void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
         CharSequence query = SearchQuery != null ? SearchQuery.getText() : null;
-        if(query != null && outState != null)
-            outState.putString("Query", query.toString());
+        if(outState != null) {
+            outState.putString("Query", query != null ? query.toString() : null);
+            outState.putString("LastCommittedQuery", lastCommittedQuery != null ? lastCommittedQuery.toString() : null);
+        }
 
         Log.i("SearchRecipeFragment", "onSaveInstanceState");
     }
 
-    private void HandleProvideSearchResultEvent(@Observes OnProvideSearchResultEvent event) {
+    private void HandleProvideSearchResultEvent(@Observes final OnProvideSearchResultEvent event) {
         Log.i("SearchRecipeFragment", "OnDisplayRecipeClicked");
-        RecipeAdapter.clear();
-        RecipeAdapter.addAll(event.GetResult());
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                RecipeAdapter.clear();
+                RecipeAdapter.addAll(event.GetResult());
+            }
+        });
     }
 }

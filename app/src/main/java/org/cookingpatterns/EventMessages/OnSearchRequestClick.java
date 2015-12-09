@@ -6,7 +6,7 @@ public class OnSearchRequestClick
 
     public OnSearchRequestClick(CharSequence query)
     {
-        this.query = query.toString();
+        this.query = query != null ? query.toString() : "";
     }
 
     public String GetQuery()

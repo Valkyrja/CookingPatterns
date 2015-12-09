@@ -45,9 +45,6 @@ public class EditIngredientsView extends LinearLayout
     @InjectView(R.id.amount)            private EditText AmountView;
     @InjectView(R.id.unit)              private Spinner UnitView;
     @InjectView(R.id.name)              private AutoCompleteTextView NameView;
-    @InjectView(R.id.sizeLayout)        private LinearLayout SizeProvider;
-
-    //InjectView(R.id.nameSpinner)   private Spinner DropdownNameView;
 
     public EditIngredientsView(Context context) {
         super(context);
@@ -88,10 +85,11 @@ public class EditIngredientsView extends LinearLayout
         super.onFinishInflate();
 
         ArrayAdapter<String> unitAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_dropdown_item_1line, Utils.getNames(UnitOfMeasure.class));
+        unitAdapter.setDropDownViewResource(R.layout.dropdownliststyle);
         UnitView.setAdapter(unitAdapter);
 
         //set auto complete
-        ArrayAdapter<Ingredient> adapter = new ArrayAdapter<Ingredient>(getContext(), android.R.layout.simple_dropdown_item_1line, existingSelection);
+        ArrayAdapter<Ingredient> adapter = new ArrayAdapter<Ingredient>(getContext(), R.layout.dropdownliststyle, existingSelection);
         NameView.setAdapter(adapter);
         NameView.addTextChangedListener(new TextWatcher() {
             @Override
@@ -105,12 +103,10 @@ public class EditIngredientsView extends LinearLayout
                 Ingredient ingr = getExistingIngredientByName(s != null ? s.toString() : "");
                 Log.i("afterTextChanged", ingr != null ? "true" : "false");
                 if(ingr != null) {
-                    UnitView.setEnabled(false);
-                    UnitView.setClickable(false);
                     UnitView.setSelection(ingr.getUnit().ordinal());
+                    UnitView.setEnabled(false);
                 } else {
                     UnitView.setEnabled(true);
-                    UnitView.setClickable(true);
                 }
             }
         });
@@ -119,12 +115,14 @@ public class EditIngredientsView extends LinearLayout
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Ingredient selected = (Ingredient)parent.getSelectedItem();
                 UnitView.setSelection(selected.getUnit().ordinal());
+                UnitView.setEnabled(false);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 Ingredient selected = (Ingredient)parent.getSelectedItem();
                 UnitView.setSelection(selected.getUnit().ordinal());
+                UnitView.setEnabled(false);
             }
         });
 
